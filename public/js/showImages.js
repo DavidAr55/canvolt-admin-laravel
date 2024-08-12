@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const photoMainInput = document.getElementById('photo-main');
+    const photoMainInput = document.getElementById('photo_main');
     const photosInput = document.getElementById('photos');
-    const photoMainPreview = document.getElementById('photo-main-preview');
-    const photosPreview = document.getElementById('photos-preview');
+    const photoMainPreview = document.getElementById('photo_main_preview');
+    const photosPreview = document.getElementById('photos_preview');
 
     photoMainInput.addEventListener('change', function () {
         displayImage(this.files[0], photoMainPreview);

@@ -8,3 +8,15 @@
     $(".js-example-basic-multiple").select2();
   }
 })(jQuery);
+
+$(document).ready(function() {
+  $('.js-example-basic-multiple').select2({
+      maximumSelectionLength: 4,
+      language: {
+          maximumSelected: function (e) {
+              var message = "¡El carrusel solo puede mostrar hasta " + e.maximum + " productos!";
+              return message;
+          }
+      }
+  });
+});

@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SliderController;
+use App\Http\Controllers\GalleryController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -28,5 +31,15 @@ Route::get('/editar-articulo', function () {
 });
 
 Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
-Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+Route::post('/products/store', [ProductController::class, 'store'])->name('products.store');
 
+Route::get('/editar-slider-canvolt', [SliderController::class, 'create']);
+
+Route::get('/canvolt-form/create', [SliderController::class, 'create'])->name('canvolt-form.create');
+Route::post('/canvolt-form/store', [SliderController::class, 'store'])->name('canvolt-form.store');
+
+
+Route::get('/administrar-galeria', [GalleryController::class, 'create']);
+
+Route::get('/gallery/create', [GalleryController::class, 'create'])->name('gallery.create');
+Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');

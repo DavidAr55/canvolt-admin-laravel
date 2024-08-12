@@ -25135,4 +25135,15 @@ dl li {
 .blank-page {
   height: 89vh;
 }
-/*# sourceMappingURL=maps/style.css.map */
+
+.form-floating label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.form-floating .form-control {
+  padding-top: 1.25rem;
+  padding-bottom: 0.75rem;
+}

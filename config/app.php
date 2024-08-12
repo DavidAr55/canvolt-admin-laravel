@@ -123,4 +123,20 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'business' => [
+        'address' => env('BUSINESS_ADDRESS', 'Default Address'),
+        'phone' => env('BUSINESS_PHONE', 'Default Phone Number'),
+        'email' => env('BUSINESS_EMAIL', 'default@example.com'),
+    ],
+
+    'social' => [
+        'instagram' => env('SOCIAL_INSTAGRAM', 'https://www.instagram.com/default/'),
+        'facebook' => env('SOCIAL_FACEBOOK', 'https://www.facebook.com/default/'),
+        'whatsapp' => env('SOCIAL_WHATSAPP', 'https://api.whatsapp.com/default/'),
+        'tiktok' => env('SOCIAL_TIKTOK', 'https://www.tiktok.com/@default'),
+    ],
+
+    'canvolt' => [
+        'url' => env('CANVOLT_URL', 'https://127.0.0.1:8000')
+    ]
 ];

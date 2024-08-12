@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('gallery', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('address_id')->constrained('addresses');
-            $table->decimal('total', 10, 2);
-            $table->enum('status', ['pending', 'shipped', 'completed', 'cancelled'])->default('pending');
+            $table->string('title');
+            $table->json('photos');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('gallery');
     }
 };
