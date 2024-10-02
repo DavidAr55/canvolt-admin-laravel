@@ -10,6 +10,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- End Layout SWAL2 -->
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- End Font Awesome -->
+
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{ asset('vendors/mdi/css/materialdesignicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendors/ti-icons/css/themify-icons.css') }}">
@@ -28,6 +32,10 @@
 
     <!-- Layout styles -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+    @if (Request::is('generar-ticket'))
+        <link rel="stylesheet" href="{{ asset('css/tickets/style.css') }}">
+    @endif    
     <!-- End Layout styles -->
 </head>
 <body>
@@ -100,9 +108,23 @@
                     </a>
                 </li>
                 <li class="nav-item menu-items">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#tickets" aria-expanded="false" aria-controls="tickets">
+                        <span class="menu-icon">
+                            <i class="mdi mdi-ticket-confirmation-outline"></i>
+                        </span>
+                        <span class="menu-title">Tickets</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="tickets">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"> <a class="nav-link" href="{{ url('/generar-ticket') }}">Generar ticket</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item menu-items">
                     <a class="nav-link" data-bs-toggle="collapse" href="#inventory" aria-expanded="false" aria-controls="inventory">
                         <span class="menu-icon">
-                            <i class="mdi mdi-laptop"></i>
+                            <i class="mdi mdi-server"></i>
                         </span>
                         <span class="menu-title">Inventario</span>
                         <i class="menu-arrow"></i>
@@ -117,7 +139,7 @@
                 <li class="nav-item menu-items">
                     <a class="nav-link" data-bs-toggle="collapse" href="#canvolt-web" aria-expanded="false" aria-controls="canvolt-web">
                         <span class="menu-icon">
-                            <i class="mdi mdi-laptop"></i>
+                            <i class="mdi mdi-code-block-tags"></i>
                         </span>
                         <span class="menu-title">Web de Canvolt</span>
                         <i class="menu-arrow"></i>
@@ -366,8 +388,7 @@
                 <!-- partial:partials/_footer.html -->
                 <footer class="footer">
                     <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024 <a href="https://www.bootstrapdash.com/" target="_blank">BootstrapDash</a>. All rights reserved.</span>
-                        <span class="text-muted float-none float-sm-end d-block mt-1 mt-sm-0 text-center"> <span class="text-muted float-none float-sm-end d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i></span> <i class="mdi mdi-heart text-danger"></i></span>
+                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024 <a href="https://www.bootstrapdash.com/" target="_blank">Canvolt C.P</a>. Todos los derechos reservados.</span>
                     </div>
                 </footer>
             <!-- partial -->

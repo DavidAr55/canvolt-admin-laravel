@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['user', 'admin'])->default('user');
             $table->rememberToken();
+            $table->string('external_id')->nullable();
+            $table->string('external_auth')->nullable();
             $table->timestamps();
         });
 

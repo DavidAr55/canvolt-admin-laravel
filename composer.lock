@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ee8a3a31b1539f75e90d629371a4363f",
+    "content-hash": "6dbe0d597c8d2f44d82fd8981fc76a85",
     "packages": [
         {
             "name": "brick/math",
@@ -5490,20 +5490,20 @@
         },
         {
             "name": "tecnickcom/tcpdf",
-            "version": "6.7.5",
+            "version": "6.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "951eabf0338ec2522bd0d5d9c79b08a3a3d36b36"
+                "reference": "154bba45ffc9c2a049aa9e21501d02472b24deb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/951eabf0338ec2522bd0d5d9c79b08a3a3d36b36",
-                "reference": "951eabf0338ec2522bd0d5d9c79b08a3a3d36b36",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/154bba45ffc9c2a049aa9e21501d02472b24deb4",
+                "reference": "154bba45ffc9c2a049aa9e21501d02472b24deb4",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.0"
+                "php": ">=5.3.0"
             },
             "type": "library",
             "autoload": {
@@ -5528,7 +5528,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPL-3.0-or-later"
+                "LGPL-3.0-only"
             ],
             "authors": [
                 {
@@ -5550,7 +5550,7 @@
             ],
             "support": {
                 "issues": "https://github.com/tecnickcom/TCPDF/issues",
-                "source": "https://github.com/tecnickcom/TCPDF/tree/6.7.5"
+                "source": "https://github.com/tecnickcom/TCPDF/tree/6.6.0"
             },
             "funding": [
                 {
@@ -5558,7 +5558,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2024-04-20T17:25:10+00:00"
+            "time": "2022-12-06T09:28:13+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
