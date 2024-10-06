@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -34,17 +35,18 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
     @if (Request::is('generar-ticket'))
-        <link rel="stylesheet" href="{{ asset('css/tickets/style.css') }}">
-    @endif    
+    <link rel="stylesheet" href="{{ asset('css/tickets/style.css') }}">
+    @endif
     <!-- End Layout styles -->
 </head>
+
 <body>
     <div class="container-scroller">
-    <!-- partial:partials/_sidebar.html -->
+        <!-- partial:partials/_sidebar.html -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-                <a class="sidebar-brand brand-logo" href="{{ url('/panel') }}"><img src="{{ asset('images/logo.png') }}" alt="logo"/></a>
-                <a class="sidebar-brand brand-logo-mini" href="{{ url('/panel') }}"><img style="width: 28px;" src="{{ asset('images/logo-mini.png') }}" alt="logo"/></a>
+                <a class="sidebar-brand brand-logo" href="{{ url('/panel') }}"><img src="{{ asset('images/logo.png') }}" alt="logo" /></a>
+                <a class="sidebar-brand brand-logo-mini" href="{{ url('/panel') }}"><img style="width: 28px;" src="{{ asset('images/logo-mini.png') }}" alt="logo" /></a>
             </div>
             <ul class="nav">
                 <li class="nav-item profile">
@@ -56,11 +58,7 @@
                             </div>
                             <div class="profile-name">
                                 <h5 class="mb-0 font-weight-normal">{{ Auth::user()->name }}</h5>
-                                @if (Auth::user()->admin && Auth::user()->admin->branchOffice)
-                                    <span>{{ Auth::user()->admin->branchOffice->name }}</span>
-                                @else
-                                    <span>No asignado a una sucursal</span>
-                                @endif
+                                <span>{{ auth()->user()->branchOffice->name }}</span>
                             </div>
                         </div>
                         <a href="#" id="profile-dropdown" data-bs-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
@@ -250,8 +248,10 @@
                     <ul class="navbar-nav w-100">
                         <li class="nav-item w-100">
                             <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                            <input type="text" class="form-control" placeholder="Buscar productos">
+                                <input id="search-input" type="text" class="form-control" placeholder="Buscar productos">
                             </form>
+                            <!-- Sección para mostrar los resultados de la búsqueda -->
+                            <ul id="search-results" class="list-group mt-2 search-dropdown d-none"></ul>
                         </li>
                     </ul>
                     <ul class="navbar-nav navbar-nav-right">
@@ -261,130 +261,130 @@
                                 <span class="count bg-success"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end navbar-dropdown preview-list" aria-labelledby="messageDropdown">
-                            <h6 class="p-3 mb-0">Messages</h6>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                <img src="../../../{{ asset('images/faces/face4.jpg') }}" alt="image" class="rounded-circle profile-pic">
-                                </div>
-                                <div class="preview-item-content">
-                                <p class="preview-subject ellipsis mb-1">Mark send you a message</p>
-                                <p class="text-muted mb-0"> 1 Minutes ago </p>
-                                </div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                <img src="../../../{{ asset('images/faces/face2.jpg') }}" alt="image" class="rounded-circle profile-pic">
-                                </div>
-                                <div class="preview-item-content">
-                                <p class="preview-subject ellipsis mb-1">Cregh send you a message</p>
-                                <p class="text-muted mb-0"> 15 Minutes ago </p>
-                                </div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                <img src="../../../{{ asset('images/faces/face3.jpg') }}" alt="image" class="rounded-circle profile-pic">
-                                </div>
-                                <div class="preview-item-content">
-                                <p class="preview-subject ellipsis mb-1">Profile picture updated</p>
-                                <p class="text-muted mb-0"> 18 Minutes ago </p>
-                                </div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <p class="p-3 mb-0 text-center">4 new messages</p>
+                                <h6 class="p-3 mb-0">Messages</h6>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <img src="../../../{{ asset('images/faces/face4.jpg') }}" alt="image" class="rounded-circle profile-pic">
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <p class="preview-subject ellipsis mb-1">Mark send you a message</p>
+                                        <p class="text-muted mb-0"> 1 Minutes ago </p>
+                                    </div>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <img src="../../../{{ asset('images/faces/face2.jpg') }}" alt="image" class="rounded-circle profile-pic">
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <p class="preview-subject ellipsis mb-1">Cregh send you a message</p>
+                                        <p class="text-muted mb-0"> 15 Minutes ago </p>
+                                    </div>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <img src="../../../{{ asset('images/faces/face3.jpg') }}" alt="image" class="rounded-circle profile-pic">
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <p class="preview-subject ellipsis mb-1">Profile picture updated</p>
+                                        <p class="text-muted mb-0"> 18 Minutes ago </p>
+                                    </div>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <p class="p-3 mb-0 text-center">4 new messages</p>
                             </div>
                         </li>
                         <li class="nav-item dropdown border-left">
                             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
-                            <i class="mdi mdi-bell"></i>
-                            <span class="count bg-danger"></span>
+                                <i class="mdi mdi-bell"></i>
+                                <span class="count bg-danger"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                            <h6 class="p-3 mb-0">Notifications</h6>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                <div class="preview-icon bg-dark rounded-circle">
-                                    <i class="mdi mdi-calendar text-success"></i>
-                                </div>
-                                </div>
-                                <div class="preview-item-content">
-                                <p class="preview-subject mb-1">Event today</p>
-                                <p class="text-muted ellipsis mb-0"> Just a reminder that you have an event today </p>
-                                </div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                <div class="preview-icon bg-dark rounded-circle">
-                                    <i class="mdi mdi-cog text-danger"></i>
-                                </div>
-                                </div>
-                                <div class="preview-item-content">
-                                <p class="preview-subject mb-1">Settings</p>
-                                <p class="text-muted ellipsis mb-0"> Update dashboard </p>
-                                </div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                <div class="preview-icon bg-dark rounded-circle">
-                                    <i class="mdi mdi-link-variant text-warning"></i>
-                                </div>
-                                </div>
-                                <div class="preview-item-content">
-                                <p class="preview-subject mb-1">Launch Admin</p>
-                                <p class="text-muted ellipsis mb-0"> New admin wow! </p>
-                                </div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <p class="p-3 mb-0 text-center">See all notifications</p>
+                                <h6 class="p-3 mb-0">Notifications</h6>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon bg-dark rounded-circle">
+                                            <i class="mdi mdi-calendar text-success"></i>
+                                        </div>
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <p class="preview-subject mb-1">Event today</p>
+                                        <p class="text-muted ellipsis mb-0"> Just a reminder that you have an event today </p>
+                                    </div>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon bg-dark rounded-circle">
+                                            <i class="mdi mdi-cog text-danger"></i>
+                                        </div>
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <p class="preview-subject mb-1">Settings</p>
+                                        <p class="text-muted ellipsis mb-0"> Update dashboard </p>
+                                    </div>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon bg-dark rounded-circle">
+                                            <i class="mdi mdi-link-variant text-warning"></i>
+                                        </div>
+                                    </div>
+                                    <div class="preview-item-content">
+                                        <p class="preview-subject mb-1">Launch Admin</p>
+                                        <p class="text-muted ellipsis mb-0"> New admin wow! </p>
+                                    </div>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <p class="p-3 mb-0 text-center">See all notifications</p>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-bs-toggle="dropdown">
-                            <div class="navbar-profile">
-                                <img class="img-xs rounded-circle" src="{{ asset('images/admin.jpg') }}" alt="">
-                                <p class="mb-0 d-none d-sm-block navbar-profile-name">Marco</p>
-                                <i class="mdi mdi-menu-down d-none d-sm-block"></i>
-                            </div>
+                                <div class="navbar-profile">
+                                    <img class="img-xs rounded-circle" src="{{ asset('images/admin.jpg') }}" alt="">
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ Auth::user()->name }}</p>
+                                    <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+                                </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end navbar-dropdown preview-list" aria-labelledby="profileDropdown">
-                            <h6 class="p-3 mb-0">Profile</h6>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <div class="preview-icon bg-dark rounded-circle">
-                                        <i class="mdi mdi-cog text-success"></i>
+                                <h6 class="p-3 mb-0">Perfil</h6>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon bg-dark rounded-circle">
+                                            <i class="mdi mdi-cog text-success"></i>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="preview-item-content">
-                                    <p class="preview-subject mb-1">Settings</p>
-                                </div>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <div class="preview-icon bg-dark rounded-circle">
-                                        <i class="mdi mdi-logout text-danger"></i>
+                                    <div class="preview-item-content">
+                                        <p class="preview-subject mb-1">Ajustes</p>
                                     </div>
-                                </div>
-                                <div class="preview-item-content">
-                                    <p class="preview-subject mb-1">Log out</p>
-                                </div>
-                            </a>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item preview-item">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon bg-dark rounded-circle">
+                                            <i class="mdi mdi-logout text-danger"></i>
+                                        </div>
+                                    </div>
+                                    <div class="preview-item-content" onclick="redirectTo(`{{ url('/cerrar-sesion') }}`)">
+                                        <p class="preview-subject mb-1">Cerrar sesión</p>
+                                    </div>
+                                </a>
                         </li>
                     </ul>
                     <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-                    <span class="mdi mdi-format-line-spacing"></span>
+                        <span class="mdi mdi-format-line-spacing"></span>
                     </button>
                 </div>
             </nav>
             <!-- partial -->
             <div class="main-panel">
-            
+
                 <!-- Content Section -->
                 @yield('content')
                 <!-- Content Section end -->
@@ -395,7 +395,7 @@
                         <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024 <a href="https://www.bootstrapdash.com/" target="_blank">Canvolt C.P</a>. Todos los derechos reservados.</span>
                     </div>
                 </footer>
-            <!-- partial -->
+                <!-- partial -->
             </div>
             <!-- main-panel ends -->
         </div>
@@ -433,5 +433,8 @@
     <script src="{{ asset('js/typeahead.js') }}"></script>
     <script src="{{ asset('js/select2.js') }}"></script>
     <script src="{{ asset('js/showImages.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+    <!-- End plugin js for this page -->
 </body>
+
 </html>

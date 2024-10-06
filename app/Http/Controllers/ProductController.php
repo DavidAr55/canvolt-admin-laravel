@@ -103,4 +103,13 @@ class ProductController extends Controller
             return redirect()->route('products.create')->with('error', 'Hubo un problema al añadir el producto: ' . $e->getMessage());
         }
     }
+
+    public function show($product)
+    {
+        // Aquí puedes buscar el producto por nombre o por ID
+        $productData = Product::where('name', $product)->firstOrFail();
+        
+        // Retorna la vista con los datos del producto
+        return json_encode($productData);
+    }
 }

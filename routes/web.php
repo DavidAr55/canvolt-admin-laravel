@@ -12,6 +12,9 @@ Route::get('/temporal-token/{token}', [AuthController::class, 'temporalToken'])-
 
 // All routes need to be authenticated
 Route::middleware('auth')->group(function () {
+    
+    Route::get('/cerrar-sesion', [AuthController::class, 'logout'])->name('auth.logout');
+
     Route::get('/', function () {
         return redirect('/panel');
     });
@@ -19,15 +22,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/panel', function () {
         return view('dashboard');
     });
-    
-    Route::get('/iniciar-sesion', function () {
-        return view('auth.login-register');
-    });
-    
-    Route::post('/login', [AuthController::class, "login"])->name('auth.login');
-    Route::post('/signup', [AuthController::class, "signup"])->name('auth.signup');
-    Route::get('/cerrar-sesion', [AuthController::class, 'logout'])->name('auth.logout');
-    Route::get('/verify-email/{token}', [AuthController::class, 'verifyEmail'])->name('auth.verify_email');
     
     Route::get('/añadir-articulo', [ProductController::class, 'create']);
     
@@ -37,6 +31,8 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products/store', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
+
     
     Route::get('/editar-slider-canvolt', [SliderController::class, 'create']);
     

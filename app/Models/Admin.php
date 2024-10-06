@@ -15,12 +15,7 @@ class Admin extends Model
         'branch_id'
     ];
 
-    public function user() {
-        return $this->belongsTo(User::class);
-    }
-
-    public function branchOffice(): BelongsTo
-    {
-        return $this->belongsTo(BranchOffice::class);
+    public function branchOffice() {
+        return $this->belongsTo(BranchOffice::class, 'branch_id');
     }
 }

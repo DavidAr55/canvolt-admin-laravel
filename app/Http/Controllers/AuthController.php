@@ -42,4 +42,15 @@ class AuthController extends Controller
         Auth::login($user);
         return redirect('/panel');
     }
+
+    /**
+     * Logs the user out
+     * 
+     * @return Route
+     */
+    public function logout()
+    {
+        Auth::logout();
+        return redirect(config('app.canvolt') . '/iniciar-sesion');
+    }
 }

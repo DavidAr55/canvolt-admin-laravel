@@ -47,12 +47,19 @@ class User extends Authenticatable
     }
 
     /**
-     * Associate with 
-     * 
-     * @return BelongsTo
+     * Set the admin relation.
+     *
+     * @return 
      */
-    public function admin(): BelongsTo
+    public function admin()
     {
         return $this->belongsTo(Admin::class);
+    }
+
+    // Relación para acceder a la oficina a través del admin
+    public function branchOffice()
+    {
+        // Usamos la relación indirecta a través de 'admin'
+        return $this->hasOneThrough(BranchOffice::class, Admin::class, 'id', 'id', 'admin_id', 'branch_id');
     }
 }
