@@ -53,6 +53,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    'canvolt' => env('CANVOLT_URL', 'https://127.0.0.1:8000'),
 
     /*
     |--------------------------------------------------------------------------
@@ -135,8 +136,4 @@ return [
         'whatsapp' => env('SOCIAL_WHATSAPP', 'https://api.whatsapp.com/default/'),
         'tiktok' => env('SOCIAL_TIKTOK', 'https://www.tiktok.com/@default'),
     ],
-
-    'canvolt' => [
-        'url' => env('CANVOLT_URL', 'https://127.0.0.1:8000')
-    ]
 ];

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreign('branch_office_id')->references('id')->on('branch_offices')->onDelete('cascade');
 
             $table->enum('status', ['pending', 'in_progress', 'finished']);
-            $table->enum('type', ['sale', 'service', 'cotization']);
+            $table->json('type');
             $table->json('ticket_details');
             $table->string('acknowledgments_message');
             $table->string('total_price');

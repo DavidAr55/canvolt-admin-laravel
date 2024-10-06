@@ -16,4 +16,8 @@ class BranchOffice extends Model
     public function tickets() {
         return $this->hasMany(Ticket::class);
     }
+
+    public function admins() {
+        return $this->hasMany(Admin::class);
+    }
 }

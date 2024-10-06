@@ -43,8 +43,8 @@
     <!-- partial:partials/_sidebar.html -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-                <a class="sidebar-brand brand-logo" href="{{ url('panel-de-control') }}"><img src="{{ asset('images/logo.png') }}" alt="logo"/></a>
-                <a class="sidebar-brand brand-logo-mini" href="{{ url('panel-de-control') }}"><img style="width: 28px;" src="{{ asset('images/logo-mini.png') }}" alt="logo"/></a>
+                <a class="sidebar-brand brand-logo" href="{{ url('/panel') }}"><img src="{{ asset('images/logo.png') }}" alt="logo"/></a>
+                <a class="sidebar-brand brand-logo-mini" href="{{ url('/panel') }}"><img style="width: 28px;" src="{{ asset('images/logo-mini.png') }}" alt="logo"/></a>
             </div>
             <ul class="nav">
                 <li class="nav-item profile">
@@ -55,8 +55,12 @@
                                 <span class="count bg-success"></span>
                             </div>
                             <div class="profile-name">
-                                <h5 class="mb-0 font-weight-normal">Marco</h5>
-                                <span>Administrador de Canvolt</span>
+                                <h5 class="mb-0 font-weight-normal">{{ Auth::user()->name }}</h5>
+                                @if (Auth::user()->admin && Auth::user()->admin->branchOffice)
+                                    <span>{{ Auth::user()->admin->branchOffice->name }}</span>
+                                @else
+                                    <span>No asignado a una sucursal</span>
+                                @endif
                             </div>
                         </div>
                         <a href="#" id="profile-dropdown" data-bs-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
@@ -100,7 +104,7 @@
                     <span class="nav-link">Navegación</span>
                 </li>
                 <li class="nav-item menu-items">
-                    <a class="nav-link" href="{{ url('panel-de-control') }}">
+                    <a class="nav-link" href="{{ url('/panel') }}">
                         <span class="menu-icon">
                             <i class="mdi mdi-speedometer"></i>
                         </span>
@@ -237,7 +241,7 @@
             <!-- partial:partials/_navbar.html -->
             <nav class="navbar p-0 fixed-top d-flex flex-row">
                 <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
-                    <a class="navbar-brand brand-logo-mini" href="{{ url('panel-de-control') }}"><img src="../../../{{ asset('images/logo-mini.svg') }}" alt="logo" /></a>
+                    <a class="navbar-brand brand-logo-mini" href="{{ url('/panel') }}"><img src="../../../{{ asset('images/logo-mini.svg') }}" alt="logo" /></a>
                 </div>
                 <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
                     <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">

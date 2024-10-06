@@ -1,46 +1,85 @@
-(function($) {
+(function ($) {
   'use strict';
-  $.fn.andSelf = function() {
+  $.fn.andSelf = function () {
     return this.addBack.apply(this, arguments);
   }
-  $(function() {
+  $(function () {
+
+    // Get the total price of services using fetch
+    fetch('/api/v1/dashboard-data/services')
+      .then(response => response.json())
+      .then(data => {
+        // Update the services container with the total price
+        $('#services-container').html(`
+          <div class="d-flex d-sm-block d-md-flex align-items-center">
+              <h2 class="mb-0">${data.total_price}</h2>
+              ${data.percentage}
+          </div>
+          <h6 class="text-muted font-weight-normal">${data.message}</h6>
+        `)
+      })
+
+    // Get the total price of products using fetch
+    fetch('/api/v1/dashboard-data/products')
+      .then(response => response.json())
+      .then(data => {
+        // Update the services container with the total price
+        $('#products-container').html(`
+          <div class="d-flex d-sm-block d-md-flex align-items-center">
+              <h2 class="mb-0">${data.total_price}</h2>
+              ${data.percentage}
+          </div>
+          <h6 class="text-muted font-weight-normal">${data.message}</h6>
+        `)
+      })
 
     //check all boxes in order status 
     $("#check-all").click(function () {
       $(".form-check-input").prop('checked', $(this).prop('checked'));
     });
 
-    if ($("#transaction-history").length) { 
-      const doughnutChartCanvas = document.getElementById('transaction-history');
-      new Chart(doughnutChartCanvas, {
-        type: 'doughnut',
-        data: {
-          labels: ["Paypal", "Stripe","Cash"],
-          datasets: [{
-              data: [55, 25, 20],
-              backgroundColor: [
-                 "#111111","#00d25b","#ffab00",
-              ],
-              borderColor: "#191c24"
-          }]
-        },
-        options: {
-          cutout: 70,
-          animationEasing: "easeOutBounce",
-          animateRotate: true,
-          animateScale: false,
-          responsive: true,
-          maintainAspectRatio: true,
-          showScale: false,
-          legend: false,
-          plugins: {
-            legend: {
-                display: false,
+    // Verifica si el elemento de la gráfica está presente en el DOM
+    if ($("#transaction-history").length) {
+      fetch('/api/v1/dashboard-data/month-transactions') // Llamada a la API para obtener los datos de transacciones
+        .then(response => response.json())
+        .then(data => {
+          // Actualiza los valores en el DOM
+          document.querySelector('.custom-value').innerHTML = `${data.total} <span>Total</span>`;
+          document.querySelector('.service-transaction-total').innerHTML = `${data.services_total}`;
+          document.querySelector('.product-transaction-total').innerHTML = `${data.products_total}`;
+
+          // Inicializa la gráfica de doughnut con los datos recibidos
+          const doughnutChartCanvas = document.getElementById('transaction-history');
+          new Chart(doughnutChartCanvas, {
+            type: 'doughnut',
+            data: {
+              labels: ["Servicios", "Productos"],
+              datasets: [{
+                data: [data.services_percentage, data.products_percentage], // Datos dinámicos de servicios y productos
+                backgroundColor: ["#FF8300", "#00d25b"], // Colores para los servicios y productos
+                borderColor: "#191c24"
+              }]
             },
-          },
-        },
-      });
+            options: {
+              cutout: 70,
+              animationEasing: "easeOutBounce",
+              animateRotate: true,
+              animateScale: false,
+              responsive: true,
+              maintainAspectRatio: true,
+              showScale: false,
+              legend: false,
+              plugins: {
+                legend: {
+                  display: false,
+                },
+              },
+            },
+          });
+        })
+        .catch(error => console.error('Error al obtener los datos de transacciones:', error));
     }
+
     if ($('#owl-carousel-basic').length) {
       $('#owl-carousel-basic').owlCarousel({
         loop: true,
@@ -63,7 +102,7 @@
         }
       });
     }
-    if($('#audience-map').length) {
+    if ($('#audience-map').length) {
       $('#audience-map').vectorMap({
         map: 'world_mill_en',
         backgroundColor: 'transparent',
@@ -80,12 +119,8 @@
             normalizeFunction: 'polynomial',
             values: {
 
-              "BZ": 75.00,
-              "US": 56.25,
-              "AU": 15.45,
-              "GB": 25.00,
-              "RO": 10.25,
-              "GE": 33.25
+              "MX": 10.00,
+              "US": 90.00
             }
           }]
         }
@@ -114,7 +149,7 @@
         }
       });
     }
-    if ($("#currentBalanceCircle").length) { 
+    if ($("#currentBalanceCircle").length) {
       var bar = new ProgressBar.Circle(currentBalanceCircle, {
         color: '#ccc',
         // This has to be the same size as the maximum width to
@@ -130,13 +165,13 @@
         from: { color: '#d53f3a', width: 12 },
         to: { color: '#d53f3a', width: 12 },
         // Set default step function for all animate calls
-        step: function(state, circle) {
+        step: function (state, circle) {
           circle.path.setAttribute('stroke', state.color);
           circle.path.setAttribute('stroke-width', state.width);
-      
+
           var value = Math.round(circle.value() * 100);
           circle.setText('');
-      
+
         }
       });
 
