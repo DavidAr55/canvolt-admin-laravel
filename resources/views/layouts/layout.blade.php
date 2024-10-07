@@ -5,6 +5,11 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="based-url" content="{{ config('app.url') }}">
+    <meta name="sound-url" content="{{ asset('sound/message-13716.mp3') }}">
+    <meta name="branch-name" content="{{ auth()->user()->branchOffice->name }}">
+
     <title>@yield('title')</title>
 
     <!-- Layout SWAL2 -->
@@ -92,7 +97,7 @@
                                     </div>
                                 </div>
                                 <div class="preview-item-content">
-                                    <p class="preview-subject ellipsis mb-1 text-small">Lista de quehaceres</p>
+                                    <p class="preview-subject ellipsis mb-1 text-small">Lista de tareas</p>
                                 </div>
                             </a>
                         </div>
@@ -248,7 +253,7 @@
                     <ul class="navbar-nav w-100">
                         <li class="nav-item w-100">
                             <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                                <input id="search-input" type="text" class="form-control" placeholder="Buscar productos">
+                                <input id="search-input" type="text" class="form-control" placeholder="Buscar productos" autocomplete="off">
                             </form>
                             <!-- Sección para mostrar los resultados de la búsqueda -->
                             <ul id="search-results" class="list-group mt-2 search-dropdown d-none"></ul>
@@ -256,91 +261,19 @@
                     </ul>
                     <ul class="navbar-nav navbar-nav-right">
                         <li class="nav-item dropdown border-left">
-                            <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="mdi mdi-email"></i>
-                                <span class="count bg-success"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end navbar-dropdown preview-list" aria-labelledby="messageDropdown">
-                                <h6 class="p-3 mb-0">Messages</h6>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <img src="../../../{{ asset('images/faces/face4.jpg') }}" alt="image" class="rounded-circle profile-pic">
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject ellipsis mb-1">Mark send you a message</p>
-                                        <p class="text-muted mb-0"> 1 Minutes ago </p>
-                                    </div>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <img src="../../../{{ asset('images/faces/face2.jpg') }}" alt="image" class="rounded-circle profile-pic">
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject ellipsis mb-1">Cregh send you a message</p>
-                                        <p class="text-muted mb-0"> 15 Minutes ago </p>
-                                    </div>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <img src="../../../{{ asset('images/faces/face3.jpg') }}" alt="image" class="rounded-circle profile-pic">
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject ellipsis mb-1">Profile picture updated</p>
-                                        <p class="text-muted mb-0"> 18 Minutes ago </p>
-                                    </div>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <p class="p-3 mb-0 text-center">4 new messages</p>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown border-left">
                             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
                                 <i class="mdi mdi-bell"></i>
-                                <span class="count bg-danger"></span>
+                                <!-- Aquí el badge se actualizará dinámicamente -->
+                                <span id="notification-badge" class="count bg-danger d-none"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                                <h6 class="p-3 mb-0">Notifications</h6>
+                                <h6 class="p-3 mb-0">Notificaciones</h6>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon bg-dark rounded-circle">
-                                            <i class="mdi mdi-calendar text-success"></i>
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Event today</p>
-                                        <p class="text-muted ellipsis mb-0"> Just a reminder that you have an event today </p>
-                                    </div>
-                                </a>
+                                <div id="notification-list">
+                                    <!-- Las notificaciones se agregarán dinámicamente aquí -->
+                                </div>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon bg-dark rounded-circle">
-                                            <i class="mdi mdi-cog text-danger"></i>
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Settings</p>
-                                        <p class="text-muted ellipsis mb-0"> Update dashboard </p>
-                                    </div>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon bg-dark rounded-circle">
-                                            <i class="mdi mdi-link-variant text-warning"></i>
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Launch Admin</p>
-                                        <p class="text-muted ellipsis mb-0"> New admin wow! </p>
-                                    </div>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <p class="p-3 mb-0 text-center">See all notifications</p>
+                                <p class="p-3 mb-0 text-center" id="no-notifications" class="d-none">No notifications</p>
                             </div>
                         </li>
                         <li class="nav-item dropdown">

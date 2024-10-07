@@ -31,7 +31,6 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products/store', [ProductController::class, 'store'])->name('products.store');
-    Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
 
     
     Route::get('/editar-slider-canvolt', [SliderController::class, 'create']);

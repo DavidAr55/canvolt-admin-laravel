@@ -13,6 +13,7 @@ class Gallery extends Model
     protected $table = 'gallery';
 
     protected $fillable = [
+        'branch_id',
         'title',
         'photos',
     ];
@@ -24,5 +25,9 @@ class Gallery extends Model
     public function getFormattedUpdatedAtAttribute()
     {
         return Carbon::parse($this->updated_at)->isoFormat('dddd D [de] MMMM [del] YYYY [a las] h:mm A');
+    }
+
+    public function branch() {
+        return $this->belongsTo(BranchOffice::class);
     }
 }

@@ -25046,8 +25046,7 @@ dl li {
   width: 57.5%;
   max-height: 300px;
   overflow-y: auto;
-  background-color: white;
-  border: 1px solid #ccc;
+  border: 2px solid rgba(108, 114, 147, 0.2);
   border-radius: 4px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
@@ -25056,31 +25055,32 @@ dl li {
 
 .search-dropdown .list-group-item {
   padding: 10px;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 2px solid rgba(108, 114, 147, 0.2);
+  background-color: #191c24;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
 .search-dropdown .list-group-item:hover {
-  background-color: #f1f1f1;
+  background-color: #0b0c0e;
 }
 
 .search-dropdown .list-group-item strong {
   font-size: 16px;
-  color: #333;
+  color: #fff;
 }
 
 .search-dropdown .list-group-item small {
   display: block;
   font-size: 14px;
-  color: #777;
+  color: #ccc;
   margin-top: 5px;
 }
 
 .search-dropdown .list-group-item span {
   display: block;
   font-size: 14px;
-  color: #555;
+  color: #999;
   margin-top: 5px;
 }
 
@@ -25091,4 +25091,8 @@ dl li {
 .search-dropdown {
   max-height: 300px;
   overflow-y: scroll;
+}
+
+.max-h-400 {
+  max-height: 400px;
 }

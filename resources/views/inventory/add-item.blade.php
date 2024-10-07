@@ -21,7 +21,7 @@
         <div class="col-md-9 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Formulario para agregar artículos al inventario</h4>
+                    <h4 class="card-title">Agregar artículos al inventario</h4>
                     <p class="card-description"> Nota: <i>recuerda no añadir productos que ya existan en el inventario</i> </p>
                     <form class="forms-sample" action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf

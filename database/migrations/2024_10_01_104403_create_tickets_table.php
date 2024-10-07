@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->string('folio');
+            $table->string('country_code');
             
             // Foreign key to users table
             $table->unsignedBigInteger('user_id');
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->json('ticket_details');
             $table->string('acknowledgments_message');
             $table->string('total_price');
+            $table->enum('payment_method', ['cash', 'card', 'transfer', 'other']);
             $table->string('qr_code')->nullable();
             $table->timestamps();
         });

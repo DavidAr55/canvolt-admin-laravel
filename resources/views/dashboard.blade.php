@@ -43,12 +43,8 @@
                 <div class="card-body">
                     <h5>Compras</h5>
                     <div class="row">
-                        <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                            <div class="d-flex d-sm-block d-md-flex align-items-center">
-                                <h2 class="mb-0">$2039</h2>
-                                <p class="text-danger ms-2 mb-0 font-weight-medium">-2.1% </p>
-                            </div>
-                            <h6 class="text-muted font-weight-normal">2.27% Since last month</h6>
+                        <div class="col-8 col-sm-12 col-xl-8 my-auto" id="purchases-container">
+                            <!-- Purchases container -->
                         </div>
                         <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
                             <i class="icon-lg mdi mdi-cart-arrow-down text-danger ml-auto"></i>
@@ -68,7 +64,7 @@
                             <canvas id="transaction-history" class="transaction-chart"></canvas>
                         </div>
                         <div class="custom-value">
-<!-- Total transactions -->
+                            <!-- Total transactions -->
                         </div>
                     </div>
                     <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
@@ -96,153 +92,22 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Estatus de servicios y ventas</h4>
-                    <div class="table-responsive">
-                        <table class="table">
+                    <div class="table-responsive max-h-400">
+                        <table class="table" id="service-and-product-sales">
                             <thead>
                                 <tr>
-                                    <th>
-                                        <div class="form-check form-check-muted m-0">
-                                            <label class="form-check-label">
-                                                <input type="checkbox" class="form-check-input" id="check-all">
-                                            </label>
-                                        </div>
-                                    </th>
-                                    <th> Client Name </th>
-                                    <th> Order No </th>
-                                    <th> Product Cost </th>
-                                    <th> Project </th>
-                                    <th> Payment Mode </th>
-                                    <th> Start Date </th>
-                                    <th> Payment Status </th>
+                                    <th> Cliente </th>
+                                    <th> Folio </th>
+                                    <th> Cobro </th>
+                                    <th> Servicio </th>
+                                    <th> Pago </th>
+                                    <th> País </th>
+                                    <th> Fecha </th>
+                                    <th> Estatus </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="form-check form-check-muted m-0">
-                                            <label class="form-check-label">
-                                                <input type="checkbox" class="form-check-input">
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <img src="{{ asset('images/faces/face1.jpg') }}" alt="image" />
-                                        <span class="ps-2">Henry Klein</span>
-                                    </td>
-                                    <td> 02312 </td>
-                                    <td> $14,500 </td>
-                                    <td> Dashboard </td>
-                                    <td> Credit card </td>
-                                    <td> 04 Dec 2019 </td>
-                                    <td>
-                                        <div class="badge badge-outline-success">Approved</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check form-check-muted m-0">
-                                            <label class="form-check-label">
-                                                <input type="checkbox" class="form-check-input">
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <img src="{{ asset('images/faces/face2.jpg') }}" alt="image" />
-                                        <span class="ps-2">Estella Bryan</span>
-                                    </td>
-                                    <td> 02312 </td>
-                                    <td> $14,500 </td>
-                                    <td> Website </td>
-                                    <td> Cash on delivered </td>
-                                    <td> 04 Dec 2019 </td>
-                                    <td>
-                                        <div class="badge badge-outline-warning">Pending</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check form-check-muted m-0">
-                                            <label class="form-check-label">
-                                                <input type="checkbox" class="form-check-input">
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <img src="{{ asset('images/faces/face5.jpg') }}" alt="image" />
-                                        <span class="ps-2">Lucy Abbott</span>
-                                    </td>
-                                    <td> 02312 </td>
-                                    <td> $14,500 </td>
-                                    <td> App design </td>
-                                    <td> Credit card </td>
-                                    <td> 04 Dec 2019 </td>
-                                    <td>
-                                        <div class="badge badge-outline-danger">Rejected</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check form-check-muted m-0">
-                                            <label class="form-check-label">
-                                                <input type="checkbox" class="form-check-input">
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <img src="{{ asset('images/faces/face3.jpg') }}" alt="image" />
-                                        <span class="ps-2">Peter Gill</span>
-                                    </td>
-                                    <td> 02312 </td>
-                                    <td> $14,500 </td>
-                                    <td> Development </td>
-                                    <td> Online Payment </td>
-                                    <td> 04 Dec 2019 </td>
-                                    <td>
-                                        <div class="badge badge-outline-success">Approved</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check form-check-muted m-0">
-                                            <label class="form-check-label">
-                                                <input type="checkbox" class="form-check-input">
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <img src="{{ asset('images/faces/face4.jpg') }}" alt="image" />
-                                        <span class="ps-2">Sallie Reyes</span>
-                                    </td>
-                                    <td> 02312 </td>
-                                    <td> $14,500 </td>
-                                    <td> Website </td>
-                                    <td> Credit card </td>
-                                    <td> 04 Dec 2019 </td>
-                                    <td>
-                                        <div class="badge badge-outline-success">Approved</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="form-check form-check-muted m-0">
-                                            <label class="form-check-label">
-                                                <input type="checkbox" class="form-check-input">
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <img src="{{ asset('images/faces/face4.jpg') }}" alt="image" />
-                                        <span class="ps-2">Sallie Reyes</span>
-                                    </td>
-                                    <td> 02312 </td>
-                                    <td> $14,500 </td>
-                                    <td> Website </td>
-                                    <td> Credit card </td>
-                                    <td> 04 Dec 2019 </td>
-                                    <td>
-                                        <div class="badge badge-outline-success">Approved</div>
-                                    </td>
-                                </tr>
+                                <!-- Las filas se añadirán aquí dinámicamente -->
                             </tbody>
                         </table>
                     </div>
@@ -256,46 +121,12 @@
                 <div class="card-body">
                     <h4 class="card-title">Lista de tareas</h4>
                     <div class="add-items d-flex">
-                        <input type="text" class="form-control todo-list-input" placeholder="enter task..">
-                        <button class="add btn btn-primary todo-list-add-btn">Add</button>
+                        <input type="text" id="todo-input" class="form-control todo-list-input" placeholder="enter task..">
+                        <button id="add-task-btn" class="add btn btn-primary todo-list-add-btn">Agregar</button>
                     </div>
                     <div class="list-wrapper">
-                        <ul class="d-flex flex-column-reverse text-white todo-list todo-list-custom">
-                            <li>
-                                <div class="form-check form-check-primary">
-                                    <label class="form-check-label">
-                                        <input class="checkbox" type="checkbox"> Create invoice </label>
-                                </div>
-                                <i class="remove mdi mdi-close-box"></i>
-                            </li>
-                            <li>
-                                <div class="form-check form-check-primary">
-                                    <label class="form-check-label">
-                                        <input class="checkbox" type="checkbox"> Meeting with Alita </label>
-                                </div>
-                                <i class="remove mdi mdi-close-box"></i>
-                            </li>
-                            <li class="completed">
-                                <div class="form-check form-check-primary">
-                                    <label class="form-check-label">
-                                        <input class="checkbox" type="checkbox" checked> Prepare for presentation </label>
-                                </div>
-                                <i class="remove mdi mdi-close-box"></i>
-                            </li>
-                            <li>
-                                <div class="form-check form-check-primary">
-                                    <label class="form-check-label">
-                                        <input class="checkbox" type="checkbox"> Plan weekend outing </label>
-                                </div>
-                                <i class="remove mdi mdi-close-box"></i>
-                            </li>
-                            <li>
-                                <div class="form-check form-check-primary">
-                                    <label class="form-check-label">
-                                        <input class="checkbox" type="checkbox"> Pick up kids from school </label>
-                                </div>
-                                <i class="remove mdi mdi-close-box"></i>
-                            </li>
+                        <ul id="todo-list" class="d-flex flex-column-reverse text-white todo-list todo-list-custom">
+                            <!-- Tasks will be loaded here -->
                         </ul>
                     </div>
                 </div>
@@ -304,17 +135,9 @@
         <div class="col-md-6 col-xl-4 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Galeria principal</h4>
+                    <h4 class="card-title">{{ auth()->user()->branchOffice->name }} - Galeria</h4>
                     <div class="owl-carousel owl-theme full-width owl-carousel-dash portfolio-carousel" id="owl-carousel-basic">
-                        <div class="item">
-                            <img src="{{ asset('images/dashboard/Rectangle.jpg') }}" alt="">
-                        </div>
-                        <div class="item">
-                            <img src="{{ asset('images/dashboard/Img_5.jpg') }}" alt="">
-                        </div>
-                        <div class="item">
-                            <img src="{{ asset('images/dashboard/img_6.jpg') }}" alt="">
-                        </div>
+                        <!-- Gallery will be loaded here -->
                     </div>
                 </div>
             </div>
@@ -336,15 +159,7 @@
                                             </td>
                                             <td>México</td>
                                             <td class="text-end"> 1500 </td>
-                                            <td class="text-end font-weight-medium"> 90% </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <i class="flag-icon flag-icon-us"></i>
-                                            </td>
-                                            <td>Estados Unidos</td>
-                                            <td class="text-end"> 500 </td>
-                                            <td class="text-end font-weight-medium"> 10% </td>
+                                            <td class="text-end font-weight-medium"> 100% </td>
                                         </tr>
                                     </tbody>
                                 </table>

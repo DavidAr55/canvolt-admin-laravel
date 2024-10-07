@@ -27,6 +27,11 @@ class Product extends Model
         return $this->hasOne(Inventory::class);
     }
 
+    public function purchases() 
+    {
+        return $this->hasMany(Purchase::class);
+    }
+
     public function getFormattedPriceAttribute()
     {
         return '$' . number_format($this->attributes['price'], 2) . ' MXN';
