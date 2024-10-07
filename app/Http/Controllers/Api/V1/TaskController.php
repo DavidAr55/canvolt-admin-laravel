@@ -36,7 +36,7 @@ class TaskController extends Controller
         // Añadir una nueva tarea
         $task = Task::create([
             'description' => $request->input('description'),
-            'due_at' => Carbon::today()->setTime(23, 30),
+            'due_at' => Carbon::today()->setTime(20, 30),
         ]);
 
         return response()->json($task);

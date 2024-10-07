@@ -24,21 +24,21 @@ document.getElementById('send-form').addEventListener('click', function () {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrf_token // Token CSRF
+            'X-CSRF-TOKEN': csrf_token
         },
-        body: JSON.stringify(formData) // Convertimos a JSON los datos
+        body: JSON.stringify(formData)
     })
     .then(response => {
-        if (!response.ok) {
-            // Si hay algún error en el servidor, lanzamos una excepción para el bloque catch
-            return response.json().then(errData => {
-                throw new Error(errData.error || 'Ocurrió un error en el servidor');
-            });
+        // Verificar si la respuesta es JSON
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return response.json();  // Parsear JSON
+        } else {
+            throw new Error('Respuesta no es JSON');
         }
-        return response.json();
     })
     .then(data => {
-        // Mostrar mensaje de éxito con SWAL2
+        // Mostrar mensaje de éxito
         Swal.fire({
             title: '¡Éxito!',
             text: 'Formulario enviado correctamente.',
@@ -47,12 +47,12 @@ document.getElementById('send-form').addEventListener('click', function () {
         });
     })
     .catch(error => {
-        // Mostrar mensaje de error con SWAL2
+        // Mostrar mensaje de error
         Swal.fire({
             title: 'Error',
             text: error.message || 'Ocurrió un error inesperado.',
             icon: 'error',
             confirmButtonText: 'Aceptar'
         });
-    });
+    });    
 });
