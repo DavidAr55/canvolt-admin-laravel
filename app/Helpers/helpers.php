@@ -82,14 +82,14 @@ if (!function_exists('current_date_spanish')) {
 }
 
 
-if (!function_exists('isPhoneOrEmail')) {
+if (!function_exists('contact_type')) {
     /**
      * Helper function to check if the given contact is a phone number or an email.
      *
      * @param string $contact
      * @return string|null 'phone', 'email' or null if the format is invalid
      */
-    function isPhoneOrEmail($contact)
+    function contact_type($contact)
     {
         // Regular expression for email validation
         $emailPattern = '/^[\w\.\-]+@[a-zA-Z\d\-]+\.[a-zA-Z]{2,}$/';

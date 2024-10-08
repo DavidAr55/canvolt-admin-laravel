@@ -19,10 +19,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Hector Gonzalez',
                 'email' => 'hector@gmail.com',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'hector@gmail.com',
                     'phone' => '+52 33 3258 8070'
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('12345678'),
                 'admin_id' => null,
@@ -35,10 +35,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'María Pérez',
                 'email' => 'maria.perez@example.com',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'maria.perez@example.com',
                     'phone' => '+52 33 3258 8070'
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('87654321'),
                 'admin_id' => null,
@@ -51,10 +51,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Juan Martínez',
                 'email' => 'juan.martinez@example.com',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'juan.martinez@example.com',
                     'phone' => '+52 33 3258 8070'
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('mypassword'),
                 'admin_id' => null,
@@ -67,10 +67,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Lucía Torres',
                 'email' => 'lucia.torres@example.com',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'lucia.torres@example.com',
                     'phone' => '+52 33 3258 8070'
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('password123'),
                 'admin_id' => null,
@@ -83,10 +83,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Carlos Jiménez',
                 'email' => 'carlos.jimenez@example.com',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'carlos.jimenez@example.com',
                     'phone' => '+52 33 3258 8070'
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('securepass'),
                 'admin_id' => null,
@@ -99,10 +99,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Sofía González',
                 'email' => 'sofia.gonzalez@example.com',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'sofia.gonzalez@example.com',
                     'phone' => '+52 33 3258 8070'
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('mypassword1'),
                 'admin_id' => null,
@@ -115,10 +115,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Diego Rivera',
                 'email' => 'diego.rivera@example.com',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'diego.rivera@example.com',
                     'phone' => '+52 33 3258 8070'
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('password456'),
                 'admin_id' => null,
@@ -131,10 +131,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Valentina Cruz',
                 'email' => 'valentina.cruz@example.com',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'valentina.cruz@example.com',
                     'phone' => '+52 33 3258 8070'
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('valentina123'),
                 'admin_id' => null,
@@ -147,10 +147,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Luis Fernández',
                 'email' => 'luis.fernandez@example.com',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'luis.fernandez@example.com',
                     'phone' => '+52 33 3258 8070'
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('luisfernandez'),
                 'admin_id' => null,
@@ -163,10 +163,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Angela Ruiz',
                 'email' => 'angela.ruiz@example.com',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'angela.ruiz@example.com',
                     'phone' => '+52 33 3258 8070'
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('angela123'),
                 'admin_id' => null,
@@ -179,10 +179,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Fernando Torres',
                 'email' => 'fernando.torres@example.com',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'fernando.torres@example.com',
                     'phone' => '+52 33 3258 8070'
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('ferndando456'),
                 'admin_id' => null,
@@ -195,10 +195,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Claudia Ríos',
                 'email' => 'claudia.rios@example.com',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'claudia.rios@example.com',
                     'phone' => null
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('claudia789'),
                 'admin_id' => null,
@@ -211,10 +211,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Pablo Salazar',
                 'email' => 'pablo.salazar@example.com',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'pablo.salazar@example.com',
                     'phone' => null
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('pablo1234'),
                 'admin_id' => null,
@@ -227,10 +227,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Isabel Morales',
                 'email' => 'isabel.morales@example.com',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'isabel.morales@example.com',
                     'phone' => null
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('isabel2024'),
                 'admin_id' => null,
@@ -243,10 +243,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Ricardo López',
                 'email' => 'ricardo.lopez@example.com',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'ricardo.lopez@example.com',
                     'phone' => '+52 33 3258 8070'
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('ricardo2023'),
                 'admin_id' => null,
@@ -260,10 +260,10 @@ class UserSeeder extends Seeder
                 // Insert 2 admin users
                 'name' => 'Marco Perez',
                 'email' => 'marco@canvolt.com.mx',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'marco@canvolt.com.mx',
                     'phone' => '+52 33 3258 8070'
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('Canvolt2024!'),
                 'admin_id' => 1,
@@ -276,10 +276,10 @@ class UserSeeder extends Seeder
             [
                 'name' => 'David Loera',
                 'email' => 'david@canvolt.com.mx',
-                'contact' => [
+                'contact' => json_encode([
                     'email' => 'david@canvolt.com.mx',
                     'phone' => '+52 33 3258 8070'
-                ],
+                ]),
                 'email_verified_at' => now(),
                 'password' => Hash::make('Canvolt2024!'),
                 'admin_id' => 2,

@@ -26,7 +26,7 @@ class TicketController extends Controller
             $this->sendMail($request);
 
             // Si se ha enviado correctamente, guardar el ticket en la base de datos
-            $this->saveTicket($request);
+            // $this->saveTicket($request);
 
             return response()->json([
                 'message' => 'Formulario recibido correctamente',
@@ -37,30 +37,6 @@ class TicketController extends Controller
             return response()->json([
                 'error' => 'Ocurrió un error en el servidor: ' . $e->getMessage()
             ], 500);
-        }
-    }
-
-    private function saveTicket($request)
-    {
-        $user = evaluateUser($request->contact);
-
-        // Crear un nuevo ticket en la base de datos
-        $ticket = new Ticket();
-        $ticket->folio = next_folio();
-        $ticket->country_code = 'MX';
-        $ticket->user_id = ;
-        $ticket->name = $request->name;
-        $ticket->contact = $request->contact;
-        $ticket->acknowledgments = $request->acknowledgments;
-        $ticket->save();
-
-        // Guardar los datos del ticket en la tabla tickets
-        foreach ($request->product as $index => $product) {
-            $ticket->products()->create([
-                'product' => $product,
-                'quantity' => $request->quantity[$index],
-                'price' => $request->price[$index]
-            ]);
         }
     }
 
