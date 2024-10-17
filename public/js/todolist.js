@@ -209,6 +209,6 @@ document.addEventListener('DOMContentLoaded', function () {
     .catch(error => console.error('Error al marcar las notificaciones como leídas:', error));
   }
 
-  // Llamar a la función que revisa tareas pendientes cada 0 segundos
-  setInterval(checkPendingTasks, 10000);  // 10 segundos
+  // Llamar a la función que revisa tareas pendientes cada 30 segundos
+  setInterval(checkPendingTasks, 30000);  // 30 segundos
 });

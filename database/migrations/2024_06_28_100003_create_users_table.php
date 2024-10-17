@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('verified_at')->nullable();
             $table->string('password');
             $table->foreignId('admin_id')->nullable()->constrained('admins')->onDelete('set null');
-            $table->rememberToken();
+            $table->rememberToken()->nullable();
             $table->string('external_id')->nullable();
             $table->string('external_auth')->nullable();
             $table->timestamps();

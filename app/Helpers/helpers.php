@@ -80,3 +80,30 @@ if (!function_exists('current_date_spanish')) {
         return "$day de $month del $year";
     }
 }
+
+
+if (!function_exists('contact_type')) {
+    /**
+     * Helper function to check if the given contact is a phone number or an email.
+     *
+     * @param string $contact
+     * @return string|null 'phone', 'email' or null if the format is invalid
+     */
+    function contact_type($contact)
+    {
+        // Regular expression for email validation
+        $emailPattern = '/^[\w\.\-]+@[a-zA-Z\d\-]+\.[a-zA-Z]{2,}$/';
+
+        // Regular expression for phone number validation (generic international format)
+        $phonePattern = '/^\+?\d{7,15}$/';
+
+        if (preg_match($emailPattern, $contact)) {
+            return 'email';
+        } elseif (preg_match($phonePattern, $contact)) {
+            return 'phone';
+        }
+
+        // If it doesn't match either pattern, return null
+        return null;
+    }
+}

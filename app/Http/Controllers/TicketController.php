@@ -387,7 +387,7 @@ class TicketController extends Controller
 
         return $html;
     }
-
+    
     private function getTotalPrice($request)
     {
         $products = $request->input('product', []);
