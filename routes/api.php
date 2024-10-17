@@ -11,6 +11,8 @@ Route::prefix('v1')->group(function() {
     Route::post('dashboard-data/gallery', 'Api\V1\DashboardDataController@gallery');
     Route::get('dashboard-data/service-and-product-sales', 'Api\V1\DashboardDataController@serviceAndProductSales');
 
+    Route::get('countries', 'Api\V1\CountryController@getCountries')->name('api.v1.countries');
+
     Route::get('tasks/today', 'Api\V1\TaskController@getTasksForToday');
     Route::post('tasks/{id}/toggle', 'Api\V1\TaskController@toggleTaskCompletion');
     Route::post('tasks/add', 'Api\V1\TaskController@addTask');

@@ -1,4 +1,16 @@
 document.getElementById('send-form').addEventListener('click', function () {
+    // Obtenemos la configuración del ticket
+    const ticket = document.querySelector('input[name="ticket"]:checked').value;
+    const country_code = document.getElementById('country_code').value;
+    const payment_method = document.getElementById('payment_method').value;
+    const extra_discount = document.getElementById('extra_discount').value;
+    const details = document.getElementById('details').value;
+    const sale_type = document.getElementById('sale_type').value;
+
+    // Obtenemos los valores de los meta tags
+    const form_route = document.head.querySelector('meta[name="form-route"]').content;
+    const csrf_token = document.head.querySelector('meta[name="csrf-token"]').content;
+
     // Seleccionamos los inputs
     const name = document.querySelector('input[name="name"]').value;
     const contact = document.querySelector('input[name="contact"]').value;
@@ -17,6 +29,12 @@ document.getElementById('send-form').addEventListener('click', function () {
         product: products,
         quantity: quantities,
         price: prices,
+        ticket: ticket,
+        country_code: country_code,
+        sale_type: sale_type,
+        payment_method: payment_method,
+        extra_discount: extra_discount,
+        details: details,
     };
 
     // Hacemos la solicitud a Laravel usando fetch
@@ -40,8 +58,8 @@ document.getElementById('send-form').addEventListener('click', function () {
     .then(data => {
         // Mostrar mensaje de éxito con SWAL2
         Swal.fire({
-            title: '¡Éxito!',
-            text: 'Formulario enviado correctamente.',
+            title: '¡Listo!',
+            text: 'El ticket se ha generado correctamente.',
             icon: 'success',
             confirmButtonText: 'Aceptar'
         });
@@ -49,7 +67,7 @@ document.getElementById('send-form').addEventListener('click', function () {
     .catch(error => {
         // Mostrar mensaje de error con SWAL2
         Swal.fire({
-            title: 'Error',
+            title: '¡Ups!',
             text: error.message || 'Ocurrió un error inesperado.',
             icon: 'error',
             confirmButtonText: 'Aceptar'

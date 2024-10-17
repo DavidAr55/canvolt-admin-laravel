@@ -10,7 +10,7 @@ class Ticket extends Model
     use HasFactory;
 
     protected $fillable = [
-        'folio', 'user_id', 'branch_office_id', 'status', 'type', 'ticket_details', 'acknowledgments_message', 'total_price', 'payment_method', 'qr_code'
+        'folio', 'country_code', 'user_id', 'branch_office_id', 'status', 'type', 'ticket_details', 'details', 'extra_discount', 'total_price', 'payment_method', 'qr_code'
     ];
 
     public function user() {

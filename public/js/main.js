@@ -30,35 +30,37 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    const productApi = document.querySelector('meta[name="product-api"]').getAttribute('content');
+
     function fetchProducts(query) {
-        fetch('http://127.0.0.1:8000/api/v1/products-get-data')
+        fetch(productApi)
             .then(response => response.json())
             .then(data => {
                 const filteredProducts = data.filter(product =>
                     product.product.toLowerCase().includes(query)
                 );
-                displayResults(filteredProducts);
+                displayResults(filteredProducts, query);
             })
             .catch(error => {
                 console.error('Error al obtener los productos:', error);
             });
     }
 
-    function displayResults(products) {
-        searchResults.innerHTML = '';
+    function displayResults(products, query) {
+        searchResults.innerHTML = ''; // Limpiar resultados previos
+    
         if (products.length > 0) {
             searchResults.classList.remove('d-none'); // Mostrar los resultados
             products.forEach(product => {
                 const listItem = document.createElement('li');
                 listItem.classList.add('list-group-item');
-
+    
                 // Hacer el contenedor clickeable
                 listItem.addEventListener('click', function () {
                     // Redirigir en otra pestaña
-
                     window.open(`http://127.0.0.1:8000/productos/todos/${product.product}`);
                 });
-
+    
                 // Mostrar la información del producto
                 listItem.innerHTML = `
                     <strong>${product.product}</strong><br>
@@ -68,9 +70,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 searchResults.appendChild(listItem);
             });
         } else {
-            closeSearchResults(); // Cerrar si no hay productos
+            // Mostrar el mensaje de "no se encontró ningún resultado"
+            const noResultsItem = document.createElement('li');
+            noResultsItem.classList.add('list-group-item', 'text-muted');
+            noResultsItem.innerHTML = `No se encontró ningún resultado para "${query}"`;
+    
+            searchResults.appendChild(noResultsItem);
+            searchResults.classList.remove('d-none'); // Mostrar la caja de resultados
         }
-    }
+
+        if (query.length === 0) {
+            closeSearchResults();
+        }
+    }    
 
     // Función para cerrar los resultados
     function closeSearchResults() {

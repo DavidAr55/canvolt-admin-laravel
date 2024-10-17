@@ -27,7 +27,8 @@ return new class extends Migration
             $table->enum('status', ['pending', 'in_progress', 'finished']);
             $table->json('type');
             $table->json('ticket_details');
-            $table->string('acknowledgments_message');
+            $table->string('details')->nullable();
+            $table->string('extra_discount')->nullable();
             $table->string('total_price');
             $table->enum('payment_method', ['cash', 'card', 'transfer', 'other']);
             $table->string('qr_code')->nullable();

@@ -21,9 +21,11 @@ const formatCurrency = (value) => {
     }).format(value);
 };
 
+let productApi = document.head.querySelector('meta[name="product-api"]').content;
+
 // Función para cargar los productos
 function fetchProducts() {
-    fetch('http://127.0.0.1:8000/api/v1/products-get-data')
+    fetch(productApi)
         .then(response => response.json())
         .then(data => {
             products = data;
@@ -55,7 +57,7 @@ function addRow() {
     newRow.innerHTML = `
         <td class="p"><p class="counter">${rowCount}</p></td>
         <td class="p-0" style="position: relative;">
-            <input type="text" name="product[]" value="" title="Descripción del producto/servicio" required class="input-p input-product">
+            <input type="text" name="product[]" value="" data-type="" title="Descripción del producto/servicio" required class="input-p input-product">
             <div class="suggestions hidden"></div>
         </td>
         <td class="p-0"><input type="number" name="quantity[]" value="1" title="Cantidad unitaria" required class="input-p input-quantity" min="1"></td>
@@ -119,6 +121,7 @@ function deleteRow(rowId) {
 
     // Actualizar los números de las filas restantes
     updateRowNumbers();
+    updateSaleType();
 }
 
 function updateRowNumbers() {
@@ -174,23 +177,36 @@ function attachInputEvents(row) {
 
 function showSuggestions(input, suggestionsBox) {
     const searchTerm = input.value.toLowerCase();
-    suggestionsBox.innerHTML = ''; // Limpiar contenido previo
+    suggestionsBox.innerHTML = '';
 
     if (searchTerm.length > 0) {
         const filteredProducts = products.filter(product =>
             product.product.toLowerCase().includes(searchTerm)
-        ).slice(0, 6); // Mostrar hasta 6 sugerencias
+        ).slice(0, 6); // Mostrar hasta 6 productos coincidentes
 
-        filteredProducts.forEach(product => {
+        // Mostrar productos filtrados
+        filteredProducts.forEach((product, index) => {
             const suggestionItem = document.createElement('div');
+
             suggestionItem.classList.add('suggestion-item');
             suggestionItem.textContent = product.product;
             suggestionItem.addEventListener('click', function() {
                 selectProduct(input, product);
                 closeSuggestions(suggestionsBox); // Cerrar sugerencias al seleccionar
             });
+
             suggestionsBox.appendChild(suggestionItem);
         });
+
+        // Añadir el término escrito por el usuario como la última sugerencia
+        const searchTermItem = document.createElement('div');
+        searchTermItem.classList.add('suggestion-item');
+        searchTermItem.innerHTML = `Agregar "<i>${searchTerm}</i>"`;
+        searchTermItem.addEventListener('click', function() {
+            input.value = searchTerm; // Establecer el texto escrito por el usuario
+            closeSuggestions(suggestionsBox);
+        });
+        suggestionsBox.appendChild(searchTermItem); // Añadirlo después de las sugerencias filtradas
 
         suggestionsBox.classList.remove('hidden');
         openSuggestions = suggestionsBox;
@@ -220,6 +236,7 @@ function selectProduct(input, product) {
 
     // Asignar los valores del producto seleccionado
     input.value = product.product;
+    input.dataset.type = product.type;
     let originalPrice = parseFloat(product.price.replace(/[^0-9.-]+/g, ""));
     
     // Aplicar descuento si existe
@@ -237,6 +254,7 @@ function selectProduct(input, product) {
 
     // Calcular el total inicial
     updateRowTotal(quantityInput, priceInput, totalField, discountSpan);
+    updateSaleType();
 }
 
 function updateRowTotal(quantityInput, priceInput, totalField, discountSpan) {
@@ -262,6 +280,30 @@ function updateFinalTotal() {
     });
 
     document.getElementById('final-total').textContent = formatCurrency(finalTotal) + ' MX'; // Formatear el total final
+}
+
+function updateSaleType() {
+    // filtrar el array de product[] para saver si tiene productos, servicios o ambos
+    let saleType = document.getElementById('sale_type');
+    let products = document.querySelectorAll('input[name="product[]"]');
+    let hasProducts = false;
+    let hasServices = false;
+
+    products.forEach(function(product) {
+        if (product.dataset.type === 'product') {
+            hasProducts = true;
+        } else if (product.dataset.type === 'service') {    
+            hasServices = true;
+        }
+    });
+
+    if (hasProducts && hasServices) {
+        saleType.value = '[\n\t"product",\n\t"service"\n]';
+    } else if (hasProducts) {
+        saleType.value = '[\n\t"product"\n]';
+    } else if (hasServices) {
+        saleType.value = '[\n\t"service"\n]';
+    }
 }
 
 // Añadir eventos iniciales a la primera fila

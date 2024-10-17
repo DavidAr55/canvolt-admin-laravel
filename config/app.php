@@ -136,4 +136,6 @@ return [
         'whatsapp' => env('SOCIAL_WHATSAPP', 'https://api.whatsapp.com/default/'),
         'tiktok' => env('SOCIAL_TIKTOK', 'https://www.tiktok.com/@default'),
     ],
+
+    'countries' => env('COUNTRY_API_URL', 'https://www.ipqualityscore.com/api/json/country/list'),
 ];

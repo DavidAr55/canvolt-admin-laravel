@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use App\Models\Ticket;
+use App\Models\User;
 use TCPDF;
 
 class TicketController extends Controller
@@ -17,11 +22,22 @@ class TicketController extends Controller
     public function store(Request $request)
     {
         try {
-            // Generar el ticket
+            // Check if the user exist
+            $user = $this->checkUser($request);
+
+            // Generate the ticket
             $this->generateTicket($request);
 
-            // Enviar correo
+            // Store the ticket
+            $this->storeTicket($request, $user);
+
+            // Send email
             $this->sendMail($request);
+
+            // Clear the session
+            Session::forget('fileName');
+            Session::forget('contact');
+            Session::forget('method');
 
             return response()->json([
                 'message' => 'Formulario recibido correctamente',
@@ -33,6 +49,35 @@ class TicketController extends Controller
                 'error' => 'Ocurrió un error en el servidor: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    private function checkUser($request)
+    {
+        // Filter contact input
+        // Check if the contact is an email or a phone number
+        Session::put('contact', $request->contact);
+        if (filter_var($request->contact, FILTER_VALIDATE_EMAIL)) {
+            Session::put('method', 'email');
+        } else {
+            Session::put('method', 'phone');
+        }
+
+        // Check if the user exist
+        $user = User::where(Session::get('method'), $request->contact)->first();
+        if (!$user) {
+            // Create the user
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = Session::get('method') == 'email' ? $request->contact : 'guest-' . Str::random(32) . '@canvolt.com.mx';
+            $user->phone = Session::get('method') == 'phone' ? $request->contact : null;
+            $user->password = Hash::make(Str::random(16));
+            $user->created_at = now();
+            $user->updated_at = now();
+            $user->save();
+        }
+
+        // Return the user
+        return $user;
     }
 
     private function generateTicket($request)
@@ -53,7 +98,7 @@ class TicketController extends Controller
         $pdf->Image(public_path('images/canvolt-water-mark.png'), 25, 50, 160, 0, 'PNG');
         $pdf->Image(public_path('images/logo.png'), 5, 6, 50, 0, 'PNG');
         
-        // Folio and date information
+        // Folio information
         $pdf->setTextColor(61, 149, 85);
         $pdf->SetFont('helvetica', 'B', 24);
         $pdf->Cell(0, 10, 'FOLIO No. ' . next_folio(), 0, 1, 'R');
@@ -66,34 +111,34 @@ class TicketController extends Controller
         $pdf->Cell(0, 5, 'Teléfono: +52 33 3258 8070', 0, 1, 'L');
         $pdf->Cell(0, 5, 'Sitio web: www.canvolt.com.mx', 0, 1, 'L');
 
-        // Obtener la fecha en formato español
+        // Date information
         $fecha = current_date_spanish();
 
-        // Obtener el ancho del texto de la fecha
-        $anchoTextoFecha = $pdf->GetStringWidth($fecha) + 14; // Añadir un margen extra de 7 unidades
+        // Date information
+        $anchoTextoFecha = $pdf->GetStringWidth($fecha) + 14;
 
-        // Calcular la posición en X para alinear a la derecha
-        $marginRight = 1.5; // Margen derecho del PDF
-        $posXFecha = $pdf->getPageWidth() - $anchoTextoFecha - $marginRight; // Posición de la fecha alineada a la derecha
+        // Calculate the position in X to align to the right
+        $marginRight = 1.5;
+        $posXFecha = $pdf->getPageWidth() - $anchoTextoFecha - $marginRight;
 
-        // Calcular la posición del texto "FECHA:" relativa al rectángulo de la fecha
-        $anchoTextoEtiqueta = $pdf->GetStringWidth('FECHA:') + 5; // Ancho del texto "FECHA:" + margen de 2 unidades
-        $posXEtiqueta = $posXFecha - $anchoTextoEtiqueta - 2; // Colocar "FECHA:" justo a la izquierda del rectángulo de la fecha
+        // Calculate the position of the text "FECHA:" relative to the date rectangle
+        $anchoTextoEtiqueta = $pdf->GetStringWidth('FECHA:') + 5; // Width of the text "FECHA:" + margin of 2 units
+        $posXEtiqueta = $posXFecha - $anchoTextoEtiqueta - 2; // Place "FECHA:" just to the left of the date rectangle
 
-        // Establecer la posición para "FECHA:" en función de la posición calculada
+        // Set the position for "FECHA:" based on the calculated position
         $pdf->SetXY($posXEtiqueta, 25);
         $pdf->Cell($anchoTextoEtiqueta, 10, 'FECHA:', 0, 0, 'L');
 
-        // Establecer la fuente y el tamaño del texto para la fecha
+        // Set the font and text size for the date
         $pdf->SetFont('helvetica', '', 12);
 
-        // Dibujar el rectángulo alineado a la derecha
+        // Draw the right-aligned rectangle
         $pdf->SetDrawColor(61, 149, 85);
-        $pdf->Rect($posXFecha - 3.5, $pdf->GetY(), $anchoTextoFecha, 10, 'D'); // Ajustar posición del rectángulo
+        $pdf->Rect($posXFecha - 3.5, $pdf->GetY(), $anchoTextoFecha, 10, 'D'); // Adjust the position of the rectangle
 
-        // Imprimir la fecha centrada dentro del rectángulo
+        // Print the date centered within the rectangle
         $pdf->SetXY($posXFecha, $pdf->GetY() + 1);
-        $pdf->Cell($anchoTextoFecha - 7, 8, $fecha, 0, 1, 'C');  // Restamos 7 unidades para el margen extra
+        $pdf->Cell($anchoTextoFecha - 7, 8, $fecha, 0, 1, 'C');  // Subtract 7 units for the extra margin
 
         // Print the buyer's information
         $pdf->SetDrawColor(255, 131, 0);
@@ -127,16 +172,17 @@ class TicketController extends Controller
         $pdf->SetFillColor(255, 255, 255);
         $pdf->SetTextColor(255, 255, 255);
 
-        // Print the table data
+        // Obtener los datos del request
         $products = $request->input('product', []);
         $quantities = $request->input('quantity', []);
         $prices = $request->input('price', []);
 
         $total = 0;
+        $extra_discount = $request->input('extra_discount', 0);
 
         // Print the table data
         for ($i = 0; $i < count($products); $i++) {
-            // Extract each value from each column
+            // Extract values by column
             $product = $products[$i];
             $quantity = $quantities[$i];
             $price = $prices[$i];
@@ -145,26 +191,35 @@ class TicketController extends Controller
             $subtotal = $quantity * $price;
             $total += $subtotal;
 
-            // Imprimir los datos en el PDF
+            // Print each row in the PDF
             $pdf->Cell(10, 12, $i + 1, 1); // # (index column)
-            $pdf->Cell(100, 12, $product, 1); // Product or service
+            $pdf->Cell(100, 12, $product, 1); // Product
             $pdf->Cell(10, 12, $quantity, 1); // Quantity
             $pdf->Cell(30, 12, price_formatted($price, 2), 1); // Unit price
-            $pdf->Cell(40, 12, price_formatted($subtotal, 2), 1); // Total
+            $pdf->Cell(40, 12, price_formatted($subtotal, 2), 1); // Subtotal
             $pdf->Ln();
         }
 
-        // Add row with grand total
-        $pdf->SetFont('helvetica', 'B', 11);
-        $pdf->Cell(150, 12, 'Total General:', 1, 0, 'R');
-        $pdf->Cell(40, 12, price_formatted($total, 2), 1, 1, 'L');
+        // Calculate the final total
+        $final_total = $total;
 
-        // Add the last row with the total
+        // Show the amount saved if there is a discount greater than 0
+        if ($extra_discount > 0) {
+            $saved_amount = $total * ($extra_discount / 100);
+            $final_total = $total - $saved_amount;
+
+            // Print the amount saved (discount applied)
+            $pdf->SetFont('helvetica', 'B', 11);
+            $pdf->Cell(150, 12, 'Monto Ahorrado (' . $extra_discount . '%):', 1, 0, 'R');
+            $pdf->Cell(40, 12, price_formatted($saved_amount, 2), 1, 1, 'L');
+        }
+
+        // Print the final total with the discount applied (or without discount if it doesn't apply)
         $pdf->SetFont('helvetica', 'B', 11);
         $pdf->SetFillColor(255, 131, 0);
         $pdf->SetTextColor(255, 255, 255);
-        $pdf->Cell(150, 10, 'Total: ', 1, 0, 'R');
-        $pdf->Cell(40, 10, price_formatted($total), 1, 1, 'L');
+        $pdf->Cell(150, 10, 'Total:', 1, 0, 'R');
+        $pdf->Cell(40, 10, price_formatted($final_total, 2), 1, 1, 'L');
 
         // Add the section of thanks, contact and warranty
         $pdf->Ln(10);
@@ -182,14 +237,35 @@ class TicketController extends Controller
                               . "Teléfono: +52 33 3258 8070\n\n", 1, 'C');
 
         $fileName = next_folio() . '.pdf';
+        Session::put('folio', next_folio());
         $path = storage_path('app/tickets/' . $fileName);
     
         try {
-            $pdf->Output($path, 'F');  // Guardar el PDF
+            // Save the PDF
+            $pdf->Output($path, 'F');
         } catch (\Exception $e) {
             // Capturar cualquier error y devolverlo como JSON
             throw new \Exception("Error al generar el PDF: " . $e->getMessage());
         }
+    }
+
+    private function storeTicket($request, $user)
+    {
+        // Store the ticket
+        $ticket = new Ticket();
+        $ticket->folio = next_folio();
+        $ticket->country_code = $request->country_code;
+        $ticket->user_id = $user->id;
+        $ticket->branch_office_id = auth()->user()->branchOffice->id;
+        $ticket->status = 'pending';
+        $ticket->type = $request->sale_type;
+        $ticket->ticket_details = json_encode($request->product);
+        $ticket->details = $request->details;
+        $ticket->extra_discount = $request->extra_discount;
+        $ticket->total_price = $this->getTotalPrice($request);
+        $ticket->payment_method = $request->payment_method;
+        $ticket->qr_code = next_folio();
+        $ticket->save();
     }
 
     private function sendMail($request)
@@ -220,7 +296,7 @@ class TicketController extends Controller
             $mail->Body    = $this->generateTicketHtml($request);
 
             // Add attachment
-            $fileName = next_folio() . '.pdf';
+            $fileName = Session::get('folio') . '.pdf';
             $path = storage_path('app/tickets/' . $fileName);
             $mail->addAttachment($path, $fileName);
 
@@ -239,7 +315,7 @@ class TicketController extends Controller
         <h1>Ticket de Compra</h1>
         <p><strong>Nombre:</strong> {$request->name}</p>
         <p><strong>Contacto:</strong> {$request->contact}</p>
-        <h2>Detalles de la Compra con el folio: " . next_folio() . "</h2>
+        <h2>Detalles de la Compra con el folio: " . Session::get('folio') . "</h2>
         <table border='1' cellpadding='5' cellspacing='0'>
             <thead>
                 <tr>
@@ -253,6 +329,9 @@ class TicketController extends Controller
             <tbody>";
 
         $totalGeneral = 0;
+        $extra_discount = $request->input('extra_discount', 0);
+
+        // Recorrer los productos y generar las filas de la tabla
         foreach ($request->product as $index => $product) {
             $cantidad = $request->quantity[$index];
             $precio = $request->price[$index];
@@ -261,7 +340,7 @@ class TicketController extends Controller
 
             $html .= "
                 <tr>
-                    <td>".($index + 1)."</td>
+                    <td>" . ($index + 1) . "</td>
                     <td>{$product}</td>
                     <td>{$cantidad}</td>
                     <td>\${$precio}</td>
@@ -269,17 +348,66 @@ class TicketController extends Controller
                 </tr>";
         }
 
+        // Calcular el descuento solo si es mayor a 0
+        $totalSaved = 0;
+        $totalConDescuento = $totalGeneral;
+
+        if ($extra_discount > 0) {
+            $totalSaved = $totalGeneral * ($extra_discount / 100);
+            $totalConDescuento = $totalGeneral - $totalSaved;
+        }
+
+        // Agregar filas de Total General, Total Ahorrado (si hay descuento) y Total con Descuento
         $html .= "
             </tbody>
             <tfoot>
                 <tr>
                     <td colspan='4' align='right'><strong>Total General:</strong></td>
                     <td>\${$totalGeneral}</td>
+                </tr>";
+
+        // Solo mostrar el total ahorrado si el descuento es mayor a 0
+        if ($extra_discount > 0) {
+            $html .= "
+                <tr>
+                    <td colspan='4' align='right'><strong>Total Ahorrado ({$extra_discount}%):</strong></td>
+                    <td>\${$totalSaved}</td>
                 </tr>
+                <tr>
+                    <td colspan='4' align='right'><strong>Total con Descuento:</strong></td>
+                    <td>\${$totalConDescuento}</td>
+                </tr>";
+        }
+
+        // Cerrar la tabla y agregar el mensaje de agradecimiento
+        $html .= "
             </tfoot>
         </table>
         <p><strong>Mensaje de Agradecimiento:</strong> {$request->acknowledgments}</p>";
 
         return $html;
+    }
+
+    private function getTotalPrice($request)
+    {
+        $products = $request->input('product', []);
+        $quantities = $request->input('quantity', []);
+        $prices = $request->input('price', []);
+
+        $total = 0;
+        $extra_discount = $request->input('extra_discount', 0);
+
+        // Calculate the total without applying the discount
+        foreach ($products as $index => $product) {
+            $total += $quantities[$index] * $prices[$index];
+        }
+
+        // Apply the additional discount if it is greater than 0
+        if ($extra_discount > 0) {
+            $total = $total - ($total * ($extra_discount / 100));
+        }
+
+        // Return the total with the discount applied (if applies)
+        return $total;
     }
 }

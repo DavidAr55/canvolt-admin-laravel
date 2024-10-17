@@ -8,7 +8,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="based-url" content="{{ config('app.url') }}">
     <meta name="sound-url" content="{{ asset('sound/message-13716.mp3') }}">
+    <meta name="product-api" content="http://127.0.0.1:8000/api/v1/products-get-data">
     <meta name="branch-name" content="{{ auth()->user()->branchOffice->name }}">
+
+    <!-- Custom meta tags -->
+    @yield('meta')
 
     <title>@yield('title')</title>
 
@@ -367,6 +371,7 @@
     <script src="{{ asset('js/select2.js') }}"></script>
     <script src="{{ asset('js/showImages.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/floating-form.js') }}"></script>
     <!-- End plugin js for this page -->
 </body>
 

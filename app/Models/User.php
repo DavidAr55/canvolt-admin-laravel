@@ -20,7 +20,12 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
+        'verified_at',
+        'admin_id',
+        'external_id',
+        'external_auth',
     ];
 
     /**
@@ -56,10 +61,10 @@ class User extends Authenticatable
         return $this->belongsTo(Admin::class);
     }
 
-    // Relación para acceder a la oficina a través del admin
+    // Relationship to access the branch office through the admin
     public function branchOffice()
     {
-        // Usamos la relación indirecta a través de 'admin'
+        // We use the indirect relationship through 'admin'
         return $this->hasOneThrough(BranchOffice::class, Admin::class, 'id', 'id', 'admin_id', 'branch_id');
     }
 }

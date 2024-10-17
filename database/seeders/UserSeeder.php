@@ -19,7 +19,8 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Hector Gonzalez',
                 'email' => 'hector@gmail.com',
-                'email_verified_at' => now(),
+                'phone' => null,
+                'verified_at' => now(),
                 'password' => Hash::make('12345678'),
                 'admin_id' => null,
                 'remember_token' => null,
@@ -31,7 +32,8 @@ class UserSeeder extends Seeder
             [
                 'name' => 'María Pérez',
                 'email' => 'maria.perez@example.com',
-                'email_verified_at' => now(),
+                'phone' => null,
+                'verified_at' => now(),
                 'password' => Hash::make('87654321'),
                 'admin_id' => null,
                 'remember_token' => Str::random(10),
@@ -43,7 +45,8 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Juan Martínez',
                 'email' => 'juan.martinez@example.com',
-                'email_verified_at' => now(),
+                'phone' => null,
+                'verified_at' => now(),
                 'password' => Hash::make('mypassword'),
                 'admin_id' => null,
                 'remember_token' => Str::random(10),
@@ -55,7 +58,8 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Lucía Torres',
                 'email' => 'lucia.torres@example.com',
-                'email_verified_at' => now(),
+                'phone' => null,
+                'verified_at' => now(),
                 'password' => Hash::make('password123'),
                 'admin_id' => null,
                 'remember_token' => Str::random(10),
@@ -67,7 +71,8 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Carlos Jiménez',
                 'email' => 'carlos.jimenez@example.com',
-                'email_verified_at' => now(),
+                'phone' => null,
+                'verified_at' => now(),
                 'password' => Hash::make('securepass'),
                 'admin_id' => null,
                 'remember_token' => Str::random(10),
@@ -79,7 +84,8 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Sofía González',
                 'email' => 'sofia.gonzalez@example.com',
-                'email_verified_at' => now(),
+                'phone' => null,
+                'verified_at' => now(),
                 'password' => Hash::make('mypassword1'),
                 'admin_id' => null,
                 'remember_token' => Str::random(10),
@@ -91,7 +97,8 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Diego Rivera',
                 'email' => 'diego.rivera@example.com',
-                'email_verified_at' => now(),
+                'phone' => null,
+                'verified_at' => now(),
                 'password' => Hash::make('password456'),
                 'admin_id' => null,
                 'remember_token' => Str::random(10),
@@ -103,7 +110,8 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Valentina Cruz',
                 'email' => 'valentina.cruz@example.com',
-                'email_verified_at' => now(),
+                'phone' => null,
+                'verified_at' => now(),
                 'password' => Hash::make('valentina123'),
                 'admin_id' => null,
                 'remember_token' => Str::random(10),
@@ -115,7 +123,8 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Luis Fernández',
                 'email' => 'luis.fernandez@example.com',
-                'email_verified_at' => now(),
+                'phone' => null,
+                'verified_at' => now(),
                 'password' => Hash::make('luisfernandez'),
                 'admin_id' => null,
                 'remember_token' => Str::random(10),
@@ -127,7 +136,8 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Angela Ruiz',
                 'email' => 'angela.ruiz@example.com',
-                'email_verified_at' => now(),
+                'phone' => null,
+                'verified_at' => now(),
                 'password' => Hash::make('angela123'),
                 'admin_id' => null,
                 'remember_token' => Str::random(10),
@@ -139,7 +149,8 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Fernando Torres',
                 'email' => 'fernando.torres@example.com',
-                'email_verified_at' => now(),
+                'phone' => null,
+                'verified_at' => now(),
                 'password' => Hash::make('ferndando456'),
                 'admin_id' => null,
                 'remember_token' => Str::random(10),
@@ -151,7 +162,8 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Claudia Ríos',
                 'email' => 'claudia.rios@example.com',
-                'email_verified_at' => now(),
+                'phone' => null,
+                'verified_at' => now(),
                 'password' => Hash::make('claudia789'),
                 'admin_id' => null,
                 'remember_token' => Str::random(10),
@@ -163,7 +175,8 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Pablo Salazar',
                 'email' => 'pablo.salazar@example.com',
-                'email_verified_at' => now(),
+                'phone' => null,
+                'verified_at' => now(),
                 'password' => Hash::make('pablo1234'),
                 'admin_id' => null,
                 'remember_token' => Str::random(10),
@@ -175,7 +188,8 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Isabel Morales',
                 'email' => 'isabel.morales@example.com',
-                'email_verified_at' => now(),
+                'phone' => null,
+                'verified_at' => now(),
                 'password' => Hash::make('isabel2024'),
                 'admin_id' => null,
                 'remember_token' => Str::random(10),
@@ -187,7 +201,8 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Ricardo López',
                 'email' => 'ricardo.lopez@example.com',
-                'email_verified_at' => now(),
+                'phone' => null,
+                'verified_at' => now(),
                 'password' => Hash::make('ricardo2023'),
                 'admin_id' => null,
                 'remember_token' => Str::random(10),
@@ -200,7 +215,8 @@ class UserSeeder extends Seeder
                 // Insert 2 admin users
                 'name' => 'Marco Perez',
                 'email' => 'marco@canvolt.com.mx',
-                'email_verified_at' => now(),
+                'phone' => '33 3258 8070',
+                'verified_at' => now(),
                 'password' => Hash::make('Canvolt2024!'),
                 'admin_id' => 1,
                 'remember_token' => null,
@@ -212,7 +228,8 @@ class UserSeeder extends Seeder
             [
                 'name' => 'David Loera',
                 'email' => 'david@canvolt.com.mx',
-                'email_verified_at' => now(),
+                'phone' => '33 3947 2308',
+                'verified_at' => now(),
                 'password' => Hash::make('Canvolt2024!'),
                 'admin_id' => 2,
                 'remember_token' => null,

@@ -2,6 +2,11 @@
 
 @section('title', 'Generar ticket para cliente')
 
+@section('meta')
+    <meta name="form-route" content="{{ route('tickets.store') }}">
+    <meta name="countries-api" content="{{ route('api.v1.countries') }}">
+@endsection
+
 @section('content')
 
 @include('layouts.alerts')
@@ -19,6 +24,9 @@
     </div>
     <div class="row justify-content-center">
         <main class="d-grid" id="main-container">
+
+            @include('layouts.floating-form')
+
             <div class="ticket-section">
                 <div class="container">
                     <img src="{{ asset('images/canvolt-water-mark.png') }}" alt="Canvolt marca de agua" class="watermark">
@@ -75,7 +83,7 @@
                                         <p class="counter">1</p>
                                     </td>
                                     <td class="p-0">
-                                        <input type="text" name="product[]" value="" title="Producto o servicio" required class="input-p input-product">
+                                        <input type="text" name="product[]" value="" title="Producto o servicio" data-type="" required class="input-p input-product">
                                         <div class="suggestions hidden"></div>
                                     </td>
                                     <td class="p-0"><input type="number" name="quantity[]" value="1" title="Cantidad unitaria" required class="input-p input-quantity"></td>
@@ -130,10 +138,9 @@
     </div>
 </div>
 
-<script> var form_route = "{{ route('tickets.store') }}"; </script>
-<script> var csrf_token = "{{ csrf_token() }}"; </script>
 <script src="{{ asset('js/tickets/main.js') }}"></script>
 <script src="{{ asset('js/tickets/send-form.js') }}"></script>
+<script src="{{ asset('js/tickets/select-countries.js') }}"></script>
 
 <!-- content-wrapper ends -->
 @endsection
