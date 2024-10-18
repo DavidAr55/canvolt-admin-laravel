@@ -1,12 +1,19 @@
+// Obtener las variables de CSS correctamente y quitar la unidad 'px'
+var xInitial = getComputedStyle(document.documentElement).getPropertyValue('--ticket-initial-x').trim();
+var yInitial = getComputedStyle(document.documentElement).getPropertyValue('--ticket-initial-y').trim();
+    
 document.addEventListener('DOMContentLoaded', function() {
+    // Parsear los valores a números flotantes
+    xInitial = parseFloat(xInitial.replace('px', ''));
+    yInitial = parseFloat(yInitial.replace('px', ''));
+
+    console.log("xInitial, yInitial", xInitial, yInitial);
+
     // Renderizar el botón inicial
     renderButton(xInitial, yInitial);
     // Cargar productos de la API
     fetchProducts();
 });
-
-var xInitial = 608.53;
-var yInitial = 36.45;
 
 let products = [];
 let openSuggestions = null; // Controlar si las sugerencias están abiertas
@@ -57,7 +64,7 @@ function addRow() {
     newRow.innerHTML = `
         <td class="p"><p class="counter">${rowCount}</p></td>
         <td class="p-0" style="position: relative;">
-            <input type="text" name="product[]" value="" data-type="" title="Descripción del producto/servicio" required class="input-p input-product">
+            <input type="text" name="product[]" value="" data-type="" data-product-img="" title="Descripción del producto/servicio" required class="input-p input-product">
             <div class="suggestions hidden"></div>
         </td>
         <td class="p-0"><input type="number" name="quantity[]" value="1" title="Cantidad unitaria" required class="input-p input-quantity" min="1"></td>
@@ -237,6 +244,7 @@ function selectProduct(input, product) {
     // Asignar los valores del producto seleccionado
     input.value = product.product;
     input.dataset.type = product.type;
+    input.dataset.productImg = product.photo_main;
     let originalPrice = parseFloat(product.price.replace(/[^0-9.-]+/g, ""));
     
     // Aplicar descuento si existe

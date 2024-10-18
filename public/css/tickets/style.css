@@ -8,6 +8,7 @@
 :root {
     --ticket-width: 595px;
     --ticket-height: 842px;
+    --ticket-margin: 25px 0;
 
     --p-text-font-size: 10px;
     
@@ -42,6 +43,17 @@
     --ticket-table-container-width: 538.58px;
 
     --ticket-table-container-th-padding: 8px;
+    --ticket-table-container-h4-font-size: 12px;
+    --ticket-table-container-h4-height: 9px;
+
+    --ticket-input-product-width: 281.22px;
+    --ticket-input-product-height: 34.01px;
+
+    --ticket-input-quantity-width: 28.34px;
+    --ticket-input-quantity-height: 34.01px;
+
+    --ticket-input-price-width: 85.03px;
+    --ticket-input-price-height: 34.01px;
 
     --ticket-footer-acknowledgments-top: 621.34px;
     --ticket-footer-acknowledgments-width: 538.58px;
@@ -55,6 +67,7 @@
     --ticket-img-icon-margin-top: 5px;
 
     --ticket-input-p-font-size: 10px;
+    --ticket-input-p-padding: 0 5px;
 
     --ticket-input-contact-width: 250px;
     --ticket-input-h-width: 538.58px;
@@ -67,6 +80,18 @@
         
     --ticket-delete-row-font-size: 10px;
     --ticket-delete-row-width: 25px;
+    --ticket-delete-row-height: 25px;
+
+    --ticket-suggestions-max-height: 300px;
+    --ticket-suggestions-margin-top: 5px;
+
+    --ticket-total-discount-margin-top: 5px;
+
+    --ticket-buttons-container-bottom: 25px;
+    --ticket-buttons-container-right: 25px;
+
+    --ticket-initial-x: 608.53px;
+    --ticket-initial-y: 36.45px;
 }
 
 .p p,
@@ -80,7 +105,7 @@
 .input-p {
     color: #fff;
     font-size: var(--ticket-input-p-font-size);
-    padding: 0 5px;
+    padding: var(--ticket-input-p-padding);
 
     background-color: transparent;
     border: none;
@@ -108,13 +133,13 @@
 }
 
 .input-product {
-    width: 281.22px;
-    height: 34.01px;
+    width: var(--ticket-input-product-width);
+    height: var(--ticket-input-product-height);
 }
 
 .input-quantity {
-    width: 28.34px;
-    height: 34.01px;
+    width: var(--ticket-input-quantity-width);
+    height: var(--ticket-input-quantity-height);
     text-align: center;
     padding: 0;
 }
@@ -131,8 +156,8 @@
 }
 
 .input-price {
-    width: 85.03px;
-    height: 34.01px;
+    width: var(--ticket-input-price-width);
+    height: var(--ticket-input-price-height);
 }
 
 .container {
@@ -153,7 +178,7 @@
     left: 50%;
     transform: translateX(-50%);
 
-    margin: 25px 0;
+    margin: var(--ticket-margin);
     
     display: flex;
     justify-content: center;
@@ -276,13 +301,14 @@
 
 .table-container td h4 {
     color: #fff;
-    font-size: 12px;
-    height: 9px;
+    font-size: var(--ticket-table-container-h4-font-size);
+    height: var(--ticket-table-container-h4-height);
     text-align: right;
 }
 
 .footer-acknowledgments {
     position: absolute;
+    z-index: -1;
     top: var(--ticket-footer-acknowledgments-top);
     left: 50%;
     transform: translateX(-50%);
@@ -294,11 +320,11 @@
 
 .footer-acknowledgments h3 {
     color: #fff;
-    font-size: 14px;
+    font-size: var(--ticket-footer-acknowledgments-h3-font-size);
     font-family: Arial;
     font-weight: bold;
 
-    height: 7px;
+    height: var(--ticket-footer-acknowledgments-h3-height);
 }
 
 .footer-text {
@@ -309,10 +335,10 @@
 }
 
 .img-icon {
-    width: 85.03px;
-    height: 84.53px;
+    width: var(--ticket-img-icon-width);
+    height: var(--ticket-img-icon-height);
     object-fit: cover;
-    margin-top: 5px;
+    margin-top: var(--ticket-img-icon-margin-top);
 }
 
 .add-row {
@@ -321,9 +347,9 @@
     color: #fff;
     border: 2px dashed #fff;
     border-radius: 50%;
-    font-size: 10px;
-    width: 25px;
-    height: 25px;
+    font-size: var(--ticket-add-row-font-size);
+    width: var(--ticket-add-row-width);
+    height: var(--ticket-add-row-height);
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     transition: all 300ms;
 }
@@ -341,9 +367,9 @@
     color: #fff;
     border: 2px dashed #fff;
     border-radius: 50%;
-    font-size: 10px;
-    width: 25px;
-    height: 25px;
+    font-size: var(--ticket-delete-row-font-size);
+    width: var(--ticket-delete-row-width);
+    height: var(--ticket-delete-row-height);
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     transition: all 300ms;
 }
@@ -362,9 +388,9 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    max-height: 300px;
+    max-height: var(--ticket-suggestions-max-height);
     overflow-y: auto;
-    margin-top: 5px;
+    margin-top: var(--ticket-suggestions-margin-top);
     width: 100%;
     z-index: 1000;
 }
@@ -390,13 +416,13 @@
 .total-discount {
     color: #3D9555;
     display: block;
-    margin-top: 5px;
+    margin-top: var(--ticket-total-discount-margin-top);
 }
 
 .buttons-container {
     position: absolute;
-    bottom: 25px;
-    right: 25px;
+    bottom: var(--ticket-buttons-container-bottom);
+    right: var(--ticket-buttons-container-right);
 }
 
 .buttons-container .btn-primary {

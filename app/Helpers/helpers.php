@@ -107,3 +107,27 @@ if (!function_exists('contact_type')) {
         return null;
     }
 }
+
+if (!function_exists('payment_method_spanish')) {
+    /**
+     * Helper function to get the Spanish name of the payment method.
+     *
+     * @param string $method
+     * @return string
+     */
+    function payment_method_spanish($method)
+    {
+        switch ($method) {
+            case 'cash':
+                return 'Efectivo';
+            case 'credit_card':
+                return 'Tarjeta de crédito';
+            case 'debit_card':
+                return 'Tarjeta de débito';
+            case 'bank_transfer':
+                return 'Transferencia bancaria';
+            default:
+                return 'Otro';
+        }
+    }
+}

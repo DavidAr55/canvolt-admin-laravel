@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\InventoryController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -24,10 +25,9 @@ Route::middleware('auth')->group(function () {
     });
     
     Route::get('/añadir-articulo', [ProductController::class, 'create']);
-    
-    Route::get('/editar-articulo', function () {
-        return view('inventory.edit-item');
-    });
+    Route::get('/inventario', [InventoryController::class, 'index']);
+    Route::get('/inventario/edit/{id}', [InventoryController::class, 'edit'])->name('inventario.edit');
+    Route::delete('/inventario/destroy/{id}', [InventoryController::class, 'destroy'])->name('inventario.destroy');
     
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products/store', [ProductController::class, 'store'])->name('products.store');

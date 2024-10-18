@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -10,6 +11,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use App\Models\Ticket;
 use App\Models\User;
+use App\Models\Product;
+use App\Models\Inventory;
 use TCPDF;
 
 class TicketController extends Controller
@@ -31,6 +34,9 @@ class TicketController extends Controller
             // Store the ticket
             $this->storeTicket($request, $user);
 
+            // Store the purchase
+            $this->checkTicketType($request); // Se maneja adecuadamente ahora
+
             // Send email
             $this->sendMail($request);
 
@@ -40,11 +46,14 @@ class TicketController extends Controller
             Session::forget('method');
 
             return response()->json([
-                'message' => 'Formulario recibido correctamente',
+                'message' => 'Ticket enviado correctamente',
                 'data' => $request->all()
             ]);
         } catch (\Exception $e) {
-            // Si ocurre un error, devolver una respuesta JSON
+            // Log el error completo para verificar qué sucede
+            Log::error("Error en TicketController@store: " . $e->getMessage());
+
+            // Responder con un JSON adecuado para mostrar el error en el frontend
             return response()->json([
                 'error' => 'Ocurrió un error en el servidor: ' . $e->getMessage()
             ], 500);
@@ -142,7 +151,7 @@ class TicketController extends Controller
 
         // Print the buyer's information
         $pdf->SetDrawColor(255, 131, 0);
-        $pdf->SetXY(10, $pdf->GetY() + 10);
+        $pdf->SetXY(10, $pdf->GetY() + 20);
 
         $pdf->SetFont('helvetica', 'B', 12);
         $pdf->Cell(0, 8, 'Datos del Comprador', 0, 1, 'L');
@@ -172,10 +181,10 @@ class TicketController extends Controller
         $pdf->SetFillColor(255, 255, 255);
         $pdf->SetTextColor(255, 255, 255);
 
-        // Obtener los datos del request
-        $products = $request->input('product', []);
-        $quantities = $request->input('quantity', []);
-        $prices = $request->input('price', []);
+        // Get the data from the request
+        $products = $request->input('products', []);
+        $quantities = $request->input('quantities', []);
+        $prices = $request->input('prices', []);
 
         $total = 0;
         $extra_discount = $request->input('extra_discount', 0);
@@ -238,7 +247,8 @@ class TicketController extends Controller
 
         $fileName = next_folio() . '.pdf';
         Session::put('folio', next_folio());
-        $path = storage_path('app/tickets/' . $fileName);
+        // $path = storage_path('tickets/' . $fileName);
+        $path = public_path('storage/tickets/' . $fileName);
     
         try {
             // Save the PDF
@@ -253,19 +263,96 @@ class TicketController extends Controller
     {
         // Store the ticket
         $ticket = new Ticket();
-        $ticket->folio = next_folio();
+        $ticket->folio = Session::get('folio');
         $ticket->country_code = $request->country_code;
         $ticket->user_id = $user->id;
         $ticket->branch_office_id = auth()->user()->branchOffice->id;
         $ticket->status = 'pending';
         $ticket->type = $request->sale_type;
-        $ticket->ticket_details = json_encode($request->product);
+
+        // Build the array with the ticket details in the required format
+        $ticketDetails = [];
+        foreach ($request->products as $index => $item) {
+            // Check if it's a product or service
+            if ($request->types[$index] === 'product') {
+                // Add as product
+                $ticketDetails[] = [
+                    'product' => $item,
+                    'quantity' => intval($request->quantities[$index]),
+                    'unit_price' => number_format($request->prices[$index], 2),
+                ];
+            } elseif ($request->types[$index] === 'service') {
+                // Add as service
+                $ticketDetails[] = [
+                    'service' => $item,
+                    'quantity' => intval($request->quantities[$index]),
+                    'unit_price' => number_format($request->prices[$index], 2),
+                ];
+            }
+        }
+
+        // Assign the formatted array as JSON to the ticket_details column
+        $ticket->ticket_details = json_encode($ticketDetails);
+
+        // Assign other ticket fields
         $ticket->details = $request->details;
         $ticket->extra_discount = $request->extra_discount;
         $ticket->total_price = $this->getTotalPrice($request);
         $ticket->payment_method = $request->payment_method;
-        $ticket->qr_code = next_folio();
+        $ticket->qr_code = Session::get('folio');
         $ticket->save();
+
+        // Check if it was saved correctly, otherwise throw an exception
+        if (!$ticket->save()) {
+            throw new \Exception("Error al guardar el ticket");
+        }
+    }
+
+    private function checkTicketType($request)
+    {
+        // Verificar si el ticket es una venta, si no lo es, continuar sin hacer nada
+        if($request->ticket === 'sale') {
+            // Recorrer los productos enviados en el request
+            foreach ($request->products as $index => $product) {
+                try {
+                    // Separar el string de producto en "brand" y "name"
+                    $productParts = explode(' - ', $product);
+                    $brand = trim($productParts[0]);
+                    $name = trim($productParts[1]);
+
+                    // Buscar el producto en la base de datos por brand y name
+                    $productModel = Product::where('brand', $brand)
+                                        ->where('name', $name)
+                                        ->first();
+
+                    if (!$productModel) {
+                        // Si el producto no se encuentra, lanzar una excepción
+                        throw new \Exception("Producto no encontrado: {$brand} - {$name}");
+                    }
+
+                    // Obtener el inventario del producto
+                    $inventory = Inventory::where('product_id', $productModel->id)->first();
+
+                    if (!$inventory) {
+                        // Si no se encuentra el inventario, lanzar una excepción
+                        throw new \Exception("Inventario no encontrado para el producto: {$brand} - {$name}");
+                    }
+
+                    // Verificar si la cantidad está disponible en el array `quantities`
+                    if (!isset($request->quantities[$index])) {
+                        throw new \Exception("Cantidad no encontrada para el producto: {$brand} - {$name}");
+                    }
+
+                    // Restar la cantidad correspondiente del stock
+                    $inventory->stock -= $request->quantities[$index];
+                    $inventory->save();
+                } catch (\Exception $e) {
+                    // Loggear el error y lanzar la excepción para ser manejada por el controlador
+                    Log::error("Error en checkTicketType: " . $e->getMessage());
+                    throw $e;  // Re-lanzar la excepción para que sea atrapada en el controlador
+                }
+            }
+        }
     }
 
     private function sendMail($request)
@@ -297,7 +384,7 @@ class TicketController extends Controller
 
             // Add attachment
             $fileName = Session::get('folio') . '.pdf';
-            $path = storage_path('app/tickets/' . $fileName);
+            $path = public_path('storage/tickets/' . $fileName);
             $mail->addAttachment($path, $fileName);
 
             // Send the email
@@ -310,80 +397,154 @@ class TicketController extends Controller
 
     private function generateTicketHtml($request)
     {
+        // Obtener el folio de la sesión
+        $folio = Session::get('folio');
+        
+        // Definir colores de la plantilla
+        $darkGray = "#171717";
+        $lightGray = "#3D3D3D";
+        $orange = "#FF8300";
+        $green = "#3D9555";
+        $white = "#FFFFFF";
+
         // Generar el formato HTML del ticket con los datos del formulario
         $html = "
-        <h1>Ticket de Compra</h1>
-        <p><strong>Nombre:</strong> {$request->name}</p>
-        <p><strong>Contacto:</strong> {$request->contact}</p>
-        <h2>Detalles de la Compra con el folio: " . Session::get('folio') . "</h2>
-        <table border='1' cellpadding='5' cellspacing='0'>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Producto o Servicio</th>
-                    <th>Cantidad</th>
-                    <th>Precio Unitario</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>";
+        <div style='background-color: {$white}; padding: 0; margin: 0; font-family: Helvetica, Arial, sans-serif; color: {$darkGray};'>
+            <table style='max-width: 840px; margin: 0 auto;' cellpadding='0' cellspacing='0' width='100%' height='100%'>
+                <tbody>
+                    <!-- Encabezado con logo -->
+                    <tr>
+                        <td colspan='3' style='background-color: {$darkGray}; padding: 20px; text-align: center;'>
+                            <a href='https://canvolt.com.mx' target='_blank'>
+                                <img src='https://sistema.canvolt.com.mx/public/images/logo-4-canvolt.png' alt='Logo Canvolt' style='width: 220px;'>
+                            </a>
+                        </td>
+                    </tr>
 
-        $totalGeneral = 0;
-        $extra_discount = $request->input('extra_discount', 0);
+                    <!-- Espaciado para la cabecera -->
+                    <tr>
+                        <td style='height: 20px; background-color: {$orange};'></td>
+                        <td style='background-color: {$white}; border: 1px solid {$lightGray}; padding: 24px;'>
+                            
+                            <!-- Saludo inicial -->
+                            <h2 style='margin: 0; color: {$darkGray};'>Hola, {$request->name}</h2>
+                            <p style='color: #6c757d;'>Gracias por comprar con nosotros en Canvolt.</p>
 
-        // Recorrer los productos y generar las filas de la tabla
-        foreach ($request->product as $index => $product) {
-            $cantidad = $request->quantity[$index];
-            $precio = $request->price[$index];
-            $total = $cantidad * $precio;
-            $totalGeneral += $total;
+                            <!-- Detalles de la compra -->
+                            <table style='width: 100%; font-size: 90%; margin-bottom: 20px;'>
+                                <tbody>
+                                    <tr>
+                                        <th style='text-align: right; padding: 4px;'>Folio:</th>
+                                        <td style='padding-left: 10px;'>{$folio}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style='text-align: right; padding: 4px;'>Fecha:</th>
+                                        <td style='padding-left: 10px;'>".current_date_spanish()."</td>
+                                    </tr>
+                                    <tr>
+                                        <th style='text-align: right; padding: 4px;'>Importe:</th>
+                                        <td style='padding-left: 10px;'>".price_formatted($this->getTotalPrice($request), 2)."</td>
+                                    </tr>
+                                    <tr>
+                                        <th style='text-align: right; padding: 4px;'>Metodo de Pago:</th>
+                                        <td style='padding-left: 10px;'>".payment_method_spanish($request->payment_method)."</td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
-            $html .= "
-                <tr>
-                    <td>" . ($index + 1) . "</td>
-                    <td>{$product}</td>
-                    <td>{$cantidad}</td>
-                    <td>\${$precio}</td>
-                    <td>\${$total}</td>
-                </tr>";
-        }
+                            <!-- Listado de productos -->
+                            <table cellpadding='0' cellspacing='0' width='100%' style='background-color: #f5f5f5; font-size: 90%;'>
+                                <thead>
+                                    <tr style='background-color: {$lightGray}; color: {$white};'>
+                                        <th style='padding: 10px;'>Producto</th>
+                                        <th style='padding: 10px;'>Detalles</th>
+                                        <th style='padding: 10px;'>Cantidad</th>
+                                        <th style='padding: 10px;'>Precio Unitario</th>
+                                        <th style='padding: 10px;'>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>";
 
-        // Calcular el descuento solo si es mayor a 0
-        $totalSaved = 0;
-        $totalConDescuento = $totalGeneral;
+                                // Inicializar el total general
+                                $totalGeneral = 0;
 
-        if ($extra_discount > 0) {
-            $totalSaved = $totalGeneral * ($extra_discount / 100);
-            $totalConDescuento = $totalGeneral - $totalSaved;
-        }
+                                // Recorrer los productos y generar las filas de la tabla incluyendo las imágenes
+                                foreach ($request->products as $index => $product) {
+                                    $cantidad = $request->quantities[$index];
+                                    $precio = $request->prices[$index];
+                                    $total = $cantidad * $precio;
+                                    $totalGeneral += $total;
+                                    // Uncomment this line on production
+                                    # $img = public_path('storage/' . $request->product_imgs[$index]);
 
-        // Agregar filas de Total General, Total Ahorrado (si hay descuento) y Total con Descuento
-        $html .= "
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan='4' align='right'><strong>Total General:</strong></td>
-                    <td>\${$totalGeneral}</td>
-                </tr>";
+                                    // This option only works on product "B9kvtOSINOxBa8Hwd7rKyctoGfZPhqouwvVuRcMt.png" or "Xiaomi - T2S Pro"
+                                    $img = "https://assets.canvolt.com.mx/assets-canvolt/" . $request->product_imgs[$index];
 
-        // Solo mostrar el total ahorrado si el descuento es mayor a 0
-        if ($extra_discount > 0) {
-            $html .= "
-                <tr>
-                    <td colspan='4' align='right'><strong>Total Ahorrado ({$extra_discount}%):</strong></td>
-                    <td>\${$totalSaved}</td>
-                </tr>
-                <tr>
-                    <td colspan='4' align='right'><strong>Total con Descuento:</strong></td>
-                    <td>\${$totalConDescuento}</td>
-                </tr>";
-        }
+                                    $html .= "
+                                    <tr>
+                                        <td style='padding: 14px; text-align: left;'><img src='{$img}' alt='{$product}' style='width: 70px;'></td>
+                                        <td style='padding: 14px; text-align: left;'>{$product}</td>
+                                        <td style='padding: 14px; text-align: center;'>{$cantidad}</td>
+                                        <td style='padding: 14px; text-align: center;'>".price_formatted($precio, 2)."</td>
+                                        <td style='padding: 14px; text-align: center;'>".price_formatted($total, 2)."</td>
+                                    </tr>";
+                                }
 
-        // Cerrar la tabla y agregar el mensaje de agradecimiento
-        $html .= "
-            </tfoot>
-        </table>
-        <p><strong>Mensaje de Agradecimiento:</strong> {$request->acknowledgments}</p>";
+                                // Descuento adicional
+                                $extra_discount = $request->input('extra_discount', 0);
+                                $totalSaved = 0;
+                                $totalConDescuento = $totalGeneral;
+
+                                if ($extra_discount > 0) {
+                                    $totalSaved = $totalGeneral * ($extra_discount / 100);
+                                    $totalConDescuento = $totalGeneral - $totalSaved;
+                                }
+
+                                $html .= "
+                                </tbody>
+                            </table>
+
+                            <!-- Resumen de la compra -->
+                            <table align='center' style='margin-top: 20px; font-size: 90%; width: 100%;'>
+                                <tr>
+                                    <td style='text-align: right;'>Subtotal:</td>
+                                    <td style='padding-left: 20px; text-align: right;'>".price_formatted($totalGeneral, 2)."</td>
+                                </tr>";
+
+                            // Mostrar el descuento si es aplicable
+                            if ($extra_discount > 0) {
+                                $html .= "
+                                <tr>
+                                    <td style='text-align: right;'>Descuento ({$extra_discount}%):</td>
+                                    <td style='padding-left: 20px; text-align: right; color: {$green};'>".price_formatted($totalSaved, 2)."</td>
+                                </tr>";
+                            }
+
+                            $html .= "
+                                <tr>
+                                    <td style='text-align: right;'><strong>Total:</strong></td>
+                                    <td style='padding-left: 20px; text-align: right;'><strong>".price_formatted($totalConDescuento, 2)."</strong></td>
+                                </tr>
+                            </table>
+
+                            <!-- Mensaje de agradecimiento -->
+                            <p style='margin-top: 20px;'>Si tienes alguna pregunta o necesitas asistencia, no dudes en ponerte en contacto con nosotros a través de: 
+                            <a href='mailto:contacto@canvolt.com.mx' style='color: {$orange}; text-decoration: none;'>contacto@canvolt.com.mx</a></p>
+                            
+                            <p>Gracias nuevamente por elegirnos.</p>
+                            <p>Saludos cordiales,<br>El equipo de Canvolt</p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td colspan='3' style='background-color: #dcdcdc; padding: 24px 14px; text-align: center;'>
+                            <p style='margin: 0; color: #212529; font-size: 12px;'>© 2024 Canvolt. Todos los derechos reservados.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>";
 
         return $html;
     }

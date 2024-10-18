@@ -83,7 +83,7 @@
                                         <p class="counter">1</p>
                                     </td>
                                     <td class="p-0">
-                                        <input type="text" name="product[]" value="" title="Producto o servicio" data-type="" required class="input-p input-product">
+                                        <input type="text" name="product[]" value="" title="Producto o servicio" data-type="" data-product-img="" required class="input-p input-product">
                                         <div class="suggestions hidden"></div>
                                     </td>
                                     <td class="p-0"><input type="number" name="quantity[]" value="1" title="Cantidad unitaria" class="input-p input-quantity"></td>

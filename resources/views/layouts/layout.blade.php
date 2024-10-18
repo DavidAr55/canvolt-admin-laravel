@@ -143,7 +143,7 @@
                     <div class="collapse" id="inventory">
                         <ul class="nav flex-column sub-menu">
                             <li class="nav-item"> <a class="nav-link" href="{{ url('/añadir-articulo') }}">Agregar al inventario</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="{{ url('/editar-articulo') }}">Editar inventario</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{ url('/inventario') }}">Inventario</a></li>
                         </ul>
                     </div>
                 </li>

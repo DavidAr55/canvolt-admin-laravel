@@ -25044,8 +25044,8 @@ dl li {
 .search-dropdown {
   position: absolute;
   width: 57.5%;
-  max-height: 300px;
-  overflow-y: auto;
+  max-height: 600px;
+  overflow-y: scroll;
   border: 2px solid rgba(108, 114, 147, 0.2);
   border-radius: 4px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -25086,11 +25086,6 @@ dl li {
 
 .search {
   position: relative;
-}
-
-.search-dropdown {
-  max-height: 300px;
-  overflow-y: scroll;
 }
 
 .max-h-400 {

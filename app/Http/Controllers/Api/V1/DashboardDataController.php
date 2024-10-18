@@ -238,7 +238,7 @@ class DashboardDataController extends Controller
                 return isset($item[$key]);
             })->sum(function ($item) {
                 // Calculate total for each item (quantity * unit price)
-                return $item['quantity'] * $item['unit_price'];
+                return intval($item['quantity']) * floatval($item['unit_price']);
             });
         })->sum(); // Sum all the calculated totals
     }

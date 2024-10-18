@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('details')->nullable();
             $table->string('extra_discount')->nullable();
             $table->string('total_price');
-            $table->enum('payment_method', ['cash', 'card', 'transfer', 'other']);
+            $table->enum('payment_method', ['cash', 'credit_card', 'debit_card', 'bank_transfer', 'other']);
             $table->string('qr_code')->nullable();
             $table->timestamps();
         });

@@ -13,7 +13,7 @@
     }
     .form-header {
         cursor: move;
-        background-color: #FF8300;
+        background-color: #3D9555;
         color: white;
         padding: 10px;
         border-radius: 6px 6px 0 0;
@@ -26,7 +26,7 @@
         position: fixed;
         bottom: 0;
         left: 10px;
-        background-color: #FF8300;
+        background-color: #3D9555;
         color: white;
         padding: 10px;
         border-radius: 6px 6px 0 0;
@@ -70,24 +70,35 @@
                 <div class="col-sm-8 d-flex flex-row">
                     <div class="form-check form-check-primary me-3">
                         <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="ticket" value="venta" checked> Venta <i class="input-helper"></i>
+                            <input type="radio" class="form-check-input" name="ticket" value="sale" checked> Venta <i class="input-helper"></i>
                         </label>
                     </div>
                     <div class="form-check form-check-info me-3">
                         <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="ticket" value="cotizacion"> Cotización <i class="input-helper"></i>
+                            <input type="radio" class="form-check-input" name="ticket" value="quote"> Cotización <i class="input-helper"></i>
                         </label>
                     </div>
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="seller" class="col-sm-4 col-form-label text-end">Metodo de pago:</label>
+                <label for="payment_method" class="col-sm-4 col-form-label text-end">Metodo de pago:</label>
                 <div class="col-sm-8">
                     <select name="payment_method" id="payment_method" class="form-select color-white">
                         <option value="cash">Efectivo</option>
                         <option value="credit_card">Tarjeta de crédito</option>
                         <option value="debit_card">Tarjeta de débito</option>
                         <option value="bank_transfer">Transferencia bancaria</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="payment_terms" class="col-sm-4 col-form-label text-end">Plazos de pago:</label>
+                <div class="col-sm-8">
+                    <select name="payment_terms" id="payment_terms" class="form-select color-white">
+                        <option value="1">1 pago</option>
+                        <option value="3">3 pagos</option>
+                        <option value="6">6 pagos</option>
+                        <option value="12">12 pagos</option>
                     </select>
                 </div>
             </div>
@@ -117,12 +128,6 @@
                     <input type="text" class="form-control color-white italic" id="vehicleModel" value="{{ auth()->user()->branchOffice->name }}" readonly>
                 </div>
             </div>
-            <div class="row mb-3">
-                <label for="buyer" class="col-sm-4 col-form-label text-end">Fecha de venta:</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control color-white italic" value="{{ current_date_spanish() }}" readonly>
-                </div>
-            </div>
             <input type="hidden" name="sale_type" id="sale_type" value="">
             <div class="row mb-3">
                 <label for="ticketScale" class="col-sm-4 col-form-label text-end">Escala de Ticket:</label>
@@ -133,21 +138,18 @@
                             <input type="radio" class="form-check-input" name="ticketScale" value="0.5"> x0.5 <i class="input-helper"></i>
                         </label>
                     </div>
-
                     <!-- x1 Scale (default) -->
                     <div class="form-check form-check-success me-3">
                         <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="ticketScale" value="1" checked> x1 <i class="input-helper"></i>
                         </label>
                     </div>
-
                     <!-- x1.5 Scale -->
                     <div class="form-check form-check-success me-3">
                         <label class="form-check-label">
                             <input type="radio" class="form-check-input" name="ticketScale" value="1.5"> x1.5 <i class="input-helper"></i>
                         </label>
                     </div>
-
                     <!-- x2 Scale -->
                     <div class="form-check form-check-success me-3">
                         <label class="form-check-label">
@@ -178,8 +180,10 @@
             // Aplicar el nuevo valor de las variables CSS
             document.documentElement.style.setProperty('--ticket-width', `${595 * scale}px`);
             document.documentElement.style.setProperty('--ticket-height', `${842 * scale}px`);
+            document.documentElement.style.setProperty('--ticket-margin', `${25 * scale}px 0`);
 
             document.documentElement.style.setProperty('--p-text-font-size', `${10 * scale}px`);
+            document.documentElement.style.setProperty('--ticket-input-p-padding', `${0 * scale}px ${5 * scale}px`);
 
             document.documentElement.style.setProperty('--ticket-img-logo-width', `${142 * scale}px`);
             document.documentElement.style.setProperty('--ticket-img-logo-top', `${16.89 * scale}px`);
@@ -213,12 +217,25 @@
             
             document.documentElement.style.setProperty('--ticket-table-container-th-padding', `${8 * scale}px`);
 
+            document.documentElement.style.setProperty('--ticket-input-product-width', `${281.22 * scale}px`);
+            document.documentElement.style.setProperty('--ticket-input-product-height', `${34.01 * scale}px`);
+
+            document.documentElement.style.setProperty('--ticket-input-quantity-width', `${28.34 * scale}px`);
+            document.documentElement.style.setProperty('--ticket-input-quantity-height', `${34.01 * scale}px`);
+
+            document.documentElement.style.setProperty('--ticket-input-price-width', `${85.03 * scale}px`);
+            document.documentElement.style.setProperty('--ticket-input-price-height', `${34.01 * scale}px`);
+
             document.documentElement.style.setProperty('--ticket-footer-acknowledgments-top', `${621.34 * scale}px`);
             document.documentElement.style.setProperty('--ticket-footer-acknowledgments-width', `${538.58 * scale}px`);
             document.documentElement.style.setProperty('--ticket-footer-acknowledgments-height', `${30.34 * scale}px`);
             document.documentElement.style.setProperty('--ticket-footer-acknowledgments-h3-font-size', `${14 * scale}px`);
 
             document.documentElement.style.setProperty('--ticket-footer-text-top', `${664.84 * scale}px`);
+
+            document.documentElement.style.setProperty('--ticket-img-icon-width', `${85.03 * scale}px`);
+            document.documentElement.style.setProperty('--ticket-img-icon-height', `${84.53 * scale}px`);
+            document.documentElement.style.setProperty('--ticket-img-icon-margin-top', `${5 * scale}px`);
 
             document.documentElement.style.setProperty('--ticket-input-contact-width', `${250 * scale}px`);
 
@@ -234,6 +251,18 @@
 
             document.documentElement.style.setProperty('--ticket-delete-row-font-size', `${10 * scale}px`);
             document.documentElement.style.setProperty('--ticket-delete-row-width', `${25 * scale}px`);
+            document.documentElement.style.setProperty('--ticket-delete-row-height', `${25 * scale}px`);
+
+            document.documentElement.style.setProperty('--ticket-suggestions-max-height', `${300 * scale}px`);
+            document.documentElement.style.setProperty('--ticket-suggestions-margin-top', `${5 * scale}px`);
+
+            document.documentElement.style.setProperty('--ticket-total-discount-margin-top', `${5 * scale}px`);
+
+            document.documentElement.style.setProperty('--ticket-buttons-container-bottom', `${25 * scale}px`);
+            document.documentElement.style.setProperty('--ticket-buttons-container-right', `${25 * scale}px`);
+
+            document.documentElement.style.setProperty('--ticket-initial-x', `${608.53 * scale}px`);
+            document.documentElement.style.setProperty('--ticket-initial-y', `${36.45 * scale}px`);
         });
     });
 </script>
