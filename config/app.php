@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://127.0.0.1:8001'),
     'canvolt' => env('CANVOLT_URL', 'https://127.0.0.1:8000'),
 
     /*
