@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('phone');
             $table->string('email');
+            $table->text('map_url');
             $table->string('image');
             $table->enum('status', ['active', 'inactive']);
             $table->string('schedule');

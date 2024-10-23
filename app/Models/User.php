@@ -18,7 +18,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_token',
         'name',
+        'last_name',
         'email',
         'phone',
         'password',
@@ -66,5 +68,10 @@ class User extends Authenticatable
     {
         // We use the indirect relationship through 'admin'
         return $this->hasOneThrough(BranchOffice::class, Admin::class, 'id', 'id', 'admin_id', 'branch_id');
+    }
+
+    public function address()
+    {
+        return $this->hasOne(Address::class);
     }
 }

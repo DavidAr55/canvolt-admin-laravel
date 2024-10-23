@@ -17,7 +17,9 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'name' => 'Hector Gonzalez',
+                'user_token' => Str::uuid(),
+                'name' => 'Hector',
+                'last_name' => 'Gonzalez',
                 'email' => 'hector@gmail.com',
                 'phone' => null,
                 'verified_at' => now(),
@@ -30,7 +32,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'María Pérez',
+                'user_token' => Str::uuid(),
+                'name' => 'María',
+                'last_name' => 'Pérez',
                 'email' => 'maria.perez@example.com',
                 'phone' => null,
                 'verified_at' => now(),
@@ -43,7 +47,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Juan Martínez',
+                'user_token' => Str::uuid(),
+                'name' => 'Juan',
+                'last_name' => 'Martínez',
                 'email' => 'juan.martinez@example.com',
                 'phone' => null,
                 'verified_at' => now(),
@@ -56,7 +62,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Lucía Torres',
+                'user_token' => Str::uuid(),
+                'name' => 'Lucía',
+                'last_name' => 'Torres',
                 'email' => 'lucia.torres@example.com',
                 'phone' => null,
                 'verified_at' => now(),
@@ -69,7 +77,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Carlos Jiménez',
+                'user_token' => Str::uuid(),
+                'name' => 'Carlos',
+                'last_name' => 'Jiménez',
                 'email' => 'carlos.jimenez@example.com',
                 'phone' => null,
                 'verified_at' => now(),
@@ -82,7 +92,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Sofía González',
+                'user_token' => Str::uuid(),
+                'name' => 'Sofía',
+                'last_name' => 'González',
                 'email' => 'sofia.gonzalez@example.com',
                 'phone' => null,
                 'verified_at' => now(),
@@ -95,7 +107,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Diego Rivera',
+                'user_token' => Str::uuid(),
+                'name' => 'Diego',
+                'last_name' => 'Rivera',
                 'email' => 'diego.rivera@example.com',
                 'phone' => null,
                 'verified_at' => now(),
@@ -108,7 +122,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Valentina Cruz',
+                'user_token' => Str::uuid(),
+                'name' => 'Valentina',
+                'last_name' => 'Cruz',
                 'email' => 'valentina.cruz@example.com',
                 'phone' => null,
                 'verified_at' => now(),
@@ -121,7 +137,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Luis Fernández',
+                'user_token' => Str::uuid(),
+                'name' => 'Luis',
+                'last_name' => 'Fernández',
                 'email' => 'luis.fernandez@example.com',
                 'phone' => null,
                 'verified_at' => now(),
@@ -134,7 +152,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Angela Ruiz',
+                'user_token' => Str::uuid(),
+                'name' => 'Angela',
+                'last_name' => 'Ruiz',
                 'email' => 'angela.ruiz@example.com',
                 'phone' => null,
                 'verified_at' => now(),
@@ -147,7 +167,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Fernando Torres',
+                'user_token' => Str::uuid(),
+                'name' => 'Fernando',
+                'last_name' => 'Torres',
                 'email' => 'fernando.torres@example.com',
                 'phone' => null,
                 'verified_at' => now(),
@@ -160,7 +182,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Claudia Ríos',
+                'user_token' => Str::uuid(),
+                'name' => 'Claudia',
+                'last_name' => 'Ríos',
                 'email' => 'claudia.rios@example.com',
                 'phone' => null,
                 'verified_at' => now(),
@@ -173,7 +197,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Pablo Salazar',
+                'user_token' => Str::uuid(),
+                'name' => 'Pablo',
+                'last_name' => 'Salazar',
                 'email' => 'pablo.salazar@example.com',
                 'phone' => null,
                 'verified_at' => now(),
@@ -186,7 +212,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Isabel Morales',
+                'user_token' => Str::uuid(),
+                'name' => 'Isabel',
+                'last_name' => 'Morales',
                 'email' => 'isabel.morales@example.com',
                 'phone' => null,
                 'verified_at' => now(),
@@ -199,7 +227,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Ricardo López',
+                'user_token' => Str::uuid(),
+                'name' => 'Ricardo',
+                'last_name' => 'López',
                 'email' => 'ricardo.lopez@example.com',
                 'phone' => null,
                 'verified_at' => now(),
@@ -213,7 +243,9 @@ class UserSeeder extends Seeder
             ],
             [
                 // Insert 2 admin users
-                'name' => 'Marco Perez',
+                'user_token' => Str::uuid(),
+                'name' => 'Marco',
+                'last_name' => 'Perez',
                 'email' => 'marco@canvolt.com.mx',
                 'phone' => '33 3258 8070',
                 'verified_at' => now(),
@@ -226,7 +258,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'David Loera',
+                'user_token' => Str::uuid(),
+                'name' => 'David',
+                'last_name' => 'Loera',
                 'email' => 'david@canvolt.com.mx',
                 'phone' => '33 3947 2308',
                 'verified_at' => now(),

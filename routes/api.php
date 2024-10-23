@@ -21,4 +21,6 @@ Route::prefix('v1')->group(function() {
     Route::delete('tasks/{id}', 'Api\V1\TaskController@deleteTask');
     Route::post('notifications/mark-as-read', 'Api\V1\TaskController@markNotificationsAsRead');
     Route::post('notifications/mark-as-checked', 'Api\V1\TaskController@markNotificationAsChecked');
+
+    Route::get('pickup-order', 'Api\V1\CreatePickupOrderController@createPickupOrder');
 });
