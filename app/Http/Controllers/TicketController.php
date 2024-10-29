@@ -478,7 +478,7 @@ class TicketController extends Controller
                                     # $img = public_path('storage/' . $request->product_imgs[$index]);
 
                                     // This option only works on product "B9kvtOSINOxBa8Hwd7rKyctoGfZPhqouwvVuRcMt.png" or "Xiaomi - T2S Pro"
-                                    $img = "https://assets.canvolt.com.mx/assets-canvolt/" . $request->product_imgs[$index];
+                                    $img = "https://assets.canvolt.mx/assets-canvolt/" . $request->product_imgs[$index];
 
                                     $html .= "
                                     <tr>
