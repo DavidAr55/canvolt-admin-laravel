@@ -17,4 +17,9 @@ class PickupOrder extends Model
         'total_price',
         'items',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
