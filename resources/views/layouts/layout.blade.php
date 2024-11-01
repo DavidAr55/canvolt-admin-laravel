@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="based-url" content="{{ config('app.url') }}">
     <meta name="sound-url" content="{{ asset('sound/message-13716.mp3') }}">
-    <meta name="product-api" content="http://127.0.0.1:8000/api/v1/products-get-data">
+    <meta name="product-api" content="{{ config('app.canvolt') }}/api/v1/products-get-data">
     <meta name="branch-name" content="{{ auth()->user()->branchOffice->name }}">
 
     <!-- Custom meta tags -->
