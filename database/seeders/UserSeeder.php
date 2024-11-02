@@ -261,7 +261,7 @@ class UserSeeder extends Seeder
                 'user_token' => Str::uuid(),
                 'name' => 'David',
                 'last_name' => 'Loera',
-                'email' => 'david@canvolt.com.mx',
+                'email' => 'davidarturoloera@gmail.com',
                 'phone' => '33 3947 2308',
                 'verified_at' => now(),
                 'password' => Hash::make('Canvolt2024!'),
