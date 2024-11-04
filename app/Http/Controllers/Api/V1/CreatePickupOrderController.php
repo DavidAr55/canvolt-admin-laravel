@@ -14,11 +14,12 @@ class CreatePickupOrderController extends Controller
     /**
      * Create a styled PDF for the pickup order with a centered QR code.
      * 
-     * @param string $qr_code
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createPickupOrder($qr_code)
+    public function createPickupOrder(Request $request)
     {
+        $qr_code = $request->qr_code;
         $pickupOrder = $this->getPickupOrder($qr_code);
 
         // Path donde se guardará el PDF
@@ -83,8 +84,6 @@ class CreatePickupOrderController extends Controller
 
         // Eliminar el archivo PDF temporal después del envío
         unlink($pdfFilePath);
-
-        return redirect()->to(config('app.canvolt') . '/carrito')->with('success', 'Orden para recoger creada y enviada correctamente.');
     }
 
     private function getPickupOrder($qr_code)
@@ -164,8 +163,8 @@ class CreatePickupOrderController extends Controller
                     <!-- Encabezado con logo -->
                     <tr>
                         <td colspan='3' style='background-color: {$darkGray}; padding: 20px; text-align: center;'>
-                            <a href='https://canvolt.com.mx' target='_blank'>
-                                <img src='https://sistema.canvolt.com.mx/public/images/logo-4-canvolt.png' alt='Logo Canvolt' style='width: 220px;'>
+                            <a href='https://canvolt.mx' target='_blank'>
+                                <img src='https://assets.canvolt.mx/logo-4-canvolt.png' alt='Logo Canvolt' style='width: 220px;'>
                             </a>
                         </td>
                     </tr>
@@ -220,7 +219,7 @@ class CreatePickupOrderController extends Controller
                                     $total = $cantidad * $precio;
                                     $totalGeneral += $total;
                                     
-                                    $img = "https://assets.canvolt.mx/assets-canvolt/" . $product['photo_main'];
+                                    $img = "https://assets.canvolt.mx/" . $product['photo_main'];
 
                                     $html .= "
                                     <tr>
