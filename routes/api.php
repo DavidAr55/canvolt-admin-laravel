@@ -23,7 +23,7 @@ Route::prefix('v1')->group(function() {
     Route::post('notifications/mark-as-checked', 'Api\V1\TaskController@markNotificationAsChecked');
 
     Route::middleware(['cors'])->group(function () {
-        Route::post('pickup-order', 'Api\V1\CreatePickupOrderController@createPickupOrder');
-        Route::get('get-pickup-order/{token}', 'Api\V1\CreatePickupOrderController@getPickupOrder');
+        Route::post('pickup-order', 'Api\V1\PickupOrderController@createPickupOrder');
+        Route::get('get-pickup-order/{token}', 'Api\V1\PickupOrderController@getPickupOrder');
     });
 });

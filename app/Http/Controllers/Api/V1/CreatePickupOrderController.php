@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use App\Http\Controllers\Controller;
 use App\Models\PickupOrder;
-class CreatePickupOrderController extends Controller
+class PickupOrderController extends Controller
 {
     /**
      * Create a styled PDF for the pickup order with a centered QR code.
@@ -176,7 +176,7 @@ class CreatePickupOrderController extends Controller
                             
                             <!-- Saludo inicial -->
                             <h2 style='margin: 0; color: {$darkGray};'>Hola, {$pickupOrder->user->name} {$pickupOrder->user->last_name}</h2>
-                            <p style='color: #6c757d;'>Gracias por comprar con nosotros en Canvolt.</p>
+                            <p style='color: #6c757d;'>Gracias por pedir en Canvolt.</p>
 
                             <!-- Detalles de la compra -->
                             <table style='width: 100%; font-size: 90%; margin-bottom: 20px;'>
@@ -245,7 +245,7 @@ class CreatePickupOrderController extends Controller
 
                             <!-- Mensaje de agradecimiento -->
                             <p style='margin-top: 20px;'>Si tienes alguna pregunta o necesitas asistencia, no dudes en ponerte en contacto con nosotros a través de: 
-                            <a href='mailto:contacto@canvolt.com.mx' style='color: {$orange}; text-decoration: none;'>contacto@canvolt.com.mx</a></p>
+                            <a href='mailto:contacto@canvolt.mx' style='color: {$orange}; text-decoration: none;'>contacto@canvolt.mx</a></p>
                             
                             <p>Gracias nuevamente por elegirnos.</p>
                             <p>Saludos cordiales,<br>El equipo de Canvolt</p>
